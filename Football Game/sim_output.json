@@ -1,0 +1,64 @@
+{
+  "mvps": [
+    {
+      "player_id": "654479d5-0b84-46f4-804e-c359415c8ff6",
+      "player_name": "Sharks WR1",
+      "score": 449.4,
+      "impact": 449.4,
+      "justification": "390 passing yards"
+    },
+    {
+      "player_id": "796065df-e5d1-4aaa-baad-7772207666af",
+      "player_name": "Falcons WR3",
+      "score": 400.9,
+      "impact": 400.9,
+      "justification": "344 passing yards"
+    },
+    {
+      "player_id": "473a1247-1d49-4855-be22-270ff0a26768",
+      "player_name": "Falcons RB2",
+      "score": 392.6,
+      "impact": 397.6,
+      "justification": "568 rushing yards; played through 1 injury events"
+    },
+    {
+      "player_id": "c4d8a572-72b1-46cd-8699-c803a9b857a3",
+      "player_name": "Falcons RB1",
+      "score": 387.8,
+      "impact": 387.8,
+      "justification": "554 rushing yards"
+    },
+    {
+      "player_id": "a86530af-2e70-4fe6-bdf6-eabad0f91a03",
+      "player_name": "Sharks RB2",
+      "score": 378.6,
+      "impact": 383.6,
+      "justification": "548 rushing yards; played through 1 injury events"
+    }
+  ],
+  "teams": [
+    {
+      "id": "19c474d0-6ae8-4b58-9471-b6b3212dd643",
+      "name": "Falcons",
+      "city": "Springfield",
+      "season_stats": {
+        "wins": 1,
+        "losses": 5,
+        "points_for": 3,
+        "points_against": 15
+      }
+    },
+    {
+      "id": "2ea07386-cbbc-4cb6-b8bc-46c1c44564fe",
+      "name": "Sharks",
+      "city": "Rivertown",
+      "season_stats": {
+        "wins": 5,
+        "losses": 1,
+        "points_for": 15,
+        "points_against": 3
+      }
+    }
+  ],
+  "event_count": 746
+}

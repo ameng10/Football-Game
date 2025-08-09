@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: football-sim-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: simuser
+      POSTGRES_PASSWORD: simpass
+      POSTGRES_DB: footballdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db-init:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

@@ -1,0 +1,47 @@
+name: AI Dev PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "High-level task for the AI (e.g., 'implement recruiting screen, fix Vite import issues, complete services')"
+        required: false
+  issues:
+    types: [opened, edited, labeled]
+
+jobs:
+  build-pr:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.issue.labels.*.name, 'ai-dev')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node (fallback to Python later if needed)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python deps
+        run: pip install "openai>=1.40.0" pyyaml==6.0.1
+
+      - name: Run AI dev
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          ISSUE_TITLE: ${{ github.event.issue.title || '' }}
+          ISSUE_BODY: ${{ github.event.issue.body || '' }}
+          DISPATCH_TASK: ${{ github.event.inputs.task || '' }}
+          ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+        run: python scripts/ai_dev.py

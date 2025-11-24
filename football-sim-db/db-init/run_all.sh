@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DB=${DB:-football-sim-db}
-USER=${USER:-anthonymeng10}
+# Match docker-compose defaults (Postgres service)
+DB=${DB:-footballdb}
+USER=${USER:-simuser}
 
 psql -v ON_ERROR_STOP=1 -d "$DB" -U "$USER" -f db-init/1-schema.sql
 psql -v ON_ERROR_STOP=1 -d "$DB" -U "$USER" -f db-init/2-compat_views_triggers.sql

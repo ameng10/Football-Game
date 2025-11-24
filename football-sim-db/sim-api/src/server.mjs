@@ -103,80 +103,6 @@ app.post("/api/debug/reset", async (req, res) => {
 
 // ----- CAREER MODE -----
 
-// Create a save + HS player
-app.post("/api/career/create", async (req, res) => {
-  const { saveName, first, last, pos, stars } = req.body || {};
-  try {
-    const { rows } = await q(
-      `SELECT sim.career_create($1::text,$2::text,$3::text,$4::text,$5::int) AS save_id;`,
-      [saveName || "My Career", first || "Alex", last || "Player", pos || "QB", Number(stars ?? 3)]
-    );
-    res.json({ ok: true, saveId: rows[0].save_id });
-  } catch (e) {
-    res.status(500).json({ ok: false, error: e.message });
-  }
-});
-
-// Generate college offers
-app.post("/api/career/:saveId/offers", async (req, res) => {
-  const { saveId } = req.params;
-  try {
-    const { rows } = await q(`SELECT sim.career_generate_offers($1::uuid) AS count;`, [saveId]);
-    res.json({ ok: true, offers: rows[0].count });
-  } catch (e) {
-    res.status(500).json({ ok: false, error: e.message });
-  }
-});
-
-// Commit to a college
-app.post("/api/career/:saveId/commit", async (req, res) => {
-  const { saveId } = req.params;
-  const { teamId } = req.body || {};
-  try {
-    await q(`SELECT sim.career_commit_college($1::uuid,$2::uuid);`, [saveId, teamId]);
-    res.json({ ok: true });
-  } catch (e) {
-    res.status(500).json({ ok: false, error: e.message });
-  }
-});
-
-// Advance a week
-app.post("/api/career/:saveId/advance", async (req, res) => {
-  const { saveId } = req.params;
-  try {
-    await q(`SELECT sim.career_advance_week($1::uuid);`, [saveId]);
-    res.json({ ok: true });
-  } catch (e) {
-    res.status(500).json({ ok: false, error: e.message });
-  }
-});
-
-// Convenience: read current state + offers
-app.get("/api/career/:saveId/state", async (req, res) => {
-  const { saveId } = req.params;
-  try {
-    const { rows: state } = await q(
-      `SELECT cs.*, cp.stage, cp.star_rating, pp.position, p.first_name, p.last_name
-       FROM sim.career_state cs
-       JOIN sim.career_player cp ON cp.save_id = cs.save_id
-       JOIN sim.player_profile pp ON pp.id = cp.player_profile_id
-       JOIN sim.person p ON p.id = pp.person_id
-       WHERE cs.save_id = $1::uuid`, [saveId]);
-
-    const { rows: offers } = await q(
-      `SELECT ro.college_team_id AS team_id, t.name AS team_name
-       FROM sim.recruiting_offer ro
-       JOIN sim.team t ON t.id = ro.college_team_id
-       WHERE ro.player_profile_id = (
-         SELECT player_profile_id FROM sim.career_player WHERE save_id = $1::uuid
-       )`, [saveId]);
-
-    res.json({ ok: true, state: state[0] || null, offers });
-  } catch (e) {
-    res.status(500).json({ ok: false, error: e.message });
-  }
-});
-
 // ===== CAREER CORE =====
 app.post("/api/career/create", async (req, res) => {
   const { saveName, first, last, pos, stars } = req.body || {};
@@ -430,6 +356,31 @@ app.post("/api/career/:saveId/commit", async (req,res)=>{
     await q(`SELECT sim.career_commit_college($1::uuid,$2::uuid)`, [saveId, teamId]);
     res.json({ ok:true });
   } catch (e){ res.status(500).json({ ok:false, error:e.message }); }
+});
+
+// Get Instagram feed for the career player
+app.get("/api/career/:saveId/instagram", async (req, res) => {
+  const { saveId } = req.params;
+  try {
+    // Get the player_profile_id for this save
+    const { rows:profileRows } = await q(
+      `SELECT player_profile_id FROM sim.career_player WHERE save_id = $1::uuid`, [saveId]);
+    if (!profileRows.length) return res.status(404).json({ ok: false, error: "Career not found" });
+
+    // Get the player_id from player_profile (assuming player_profile.id = players.id)
+    const playerProfileId = profileRows[0].player_profile_id;
+
+    // Query the instagram_feed table for this player
+    const { rows:posts } = await q(
+      `SELECT post_url, caption, posted_at, likes, comments
+       FROM instagram_feed
+       WHERE player_id = $1
+       ORDER BY posted_at DESC
+       LIMIT 10`, [playerProfileId]);
+    res.json({ ok: true, posts });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e.message });
+  }
 });
 
 

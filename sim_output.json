@@ -1,64 +1,3565 @@
 {
   "mvps": [
     {
-      "player_id": "654479d5-0b84-46f4-804e-c359415c8ff6",
-      "player_name": "Sharks WR1",
-      "score": 449.4,
-      "impact": 449.4,
-      "justification": "390 passing yards"
+      "player_id": "f9f94ccb-8866-4535-bed3-16009f0dbf72",
+      "player_name": "Raiders RB1",
+      "score": 695.1,
+      "impact": 695.1,
+      "justification": "993 rushing yards"
     },
     {
-      "player_id": "796065df-e5d1-4aaa-baad-7772207666af",
+      "player_id": "df64324c-f413-4c09-98a0-45a3efd40d24",
+      "player_name": "Eagles RB2",
+      "score": 686.0,
+      "impact": 686.0,
+      "justification": "980 rushing yards"
+    },
+    {
+      "player_id": "0c70c6cc-d229-403c-b704-91ef036d2862",
+      "player_name": "Broncos WR1",
+      "score": 667.8,
+      "impact": 667.8,
+      "justification": "579 passing yards"
+    },
+    {
+      "player_id": "21627d16-5889-4127-a495-e6e84ff63aca",
+      "player_name": "Buccaneers RB1",
+      "score": 652.4,
+      "impact": 652.4,
+      "justification": "932 rushing yards"
+    },
+    {
+      "player_id": "c00627e5-5ebb-47aa-9bff-e38264095a63",
       "player_name": "Falcons WR3",
-      "score": 400.9,
-      "impact": 400.9,
-      "justification": "344 passing yards"
-    },
-    {
-      "player_id": "473a1247-1d49-4855-be22-270ff0a26768",
-      "player_name": "Falcons RB2",
-      "score": 392.6,
-      "impact": 397.6,
-      "justification": "568 rushing yards; played through 1 injury events"
-    },
-    {
-      "player_id": "c4d8a572-72b1-46cd-8699-c803a9b857a3",
-      "player_name": "Falcons RB1",
-      "score": 387.8,
-      "impact": 387.8,
-      "justification": "554 rushing yards"
-    },
-    {
-      "player_id": "a86530af-2e70-4fe6-bdf6-eabad0f91a03",
-      "player_name": "Sharks RB2",
-      "score": 378.6,
-      "impact": 383.6,
-      "justification": "548 rushing yards; played through 1 injury events"
+      "score": 645.9,
+      "impact": 650.9,
+      "justification": "562 passing yards; played through 1 injury events"
     }
   ],
   "teams": [
     {
-      "id": "19c474d0-6ae8-4b58-9471-b6b3212dd643",
-      "name": "Falcons",
-      "city": "Springfield",
+      "id": "1fee70dd-316d-4b07-9566-9f64f60b4abe",
+      "name": "Bills",
+      "city": "Buffalo",
       "season_stats": {
-        "wins": 1,
-        "losses": 5,
-        "points_for": 3,
-        "points_against": 15
+        "wins": 3,
+        "losses": 1,
+        "points_for": 106,
+        "points_against": 97
       }
     },
     {
-      "id": "2ea07386-cbbc-4cb6-b8bc-46c1c44564fe",
-      "name": "Sharks",
-      "city": "Rivertown",
+      "id": "0b82a5fb-e0fc-4977-82f6-35f713c4b193",
+      "name": "Dolphins",
+      "city": "Miami",
+      "season_stats": {
+        "wins": 2,
+        "losses": 3,
+        "points_for": 98,
+        "points_against": 97
+      }
+    },
+    {
+      "id": "a4168318-57ef-473b-a76b-15ef4f17a4a7",
+      "name": "Patriots",
+      "city": "New England",
+      "season_stats": {
+        "wins": 3,
+        "losses": 2,
+        "points_for": 122,
+        "points_against": 97
+      }
+    },
+    {
+      "id": "c6603401-8361-4608-90aa-829ef92b9e69",
+      "name": "Jets",
+      "city": "New York",
+      "season_stats": {
+        "wins": 2,
+        "losses": 4,
+        "points_for": 95,
+        "points_against": 130
+      }
+    },
+    {
+      "id": "96dedcc9-7c68-44a8-b440-2f7393f32127",
+      "name": "Ravens",
+      "city": "Baltimore",
+      "season_stats": {
+        "wins": 3,
+        "losses": 3,
+        "points_for": 132,
+        "points_against": 111
+      }
+    },
+    {
+      "id": "dd4de62a-35b3-4c0f-8158-cafed8dabffe",
+      "name": "Bengals",
+      "city": "Cincinnati",
+      "season_stats": {
+        "wins": 2,
+        "losses": 4,
+        "points_for": 101,
+        "points_against": 150
+      }
+    },
+    {
+      "id": "d00ac713-882f-4b18-be72-e31ca3974002",
+      "name": "Browns",
+      "city": "Cleveland",
+      "season_stats": {
+        "wins": 1,
+        "losses": 4,
+        "points_for": 98,
+        "points_against": 122
+      }
+    },
+    {
+      "id": "e5b5ccd0-8d00-46b2-8194-31be65ee50df",
+      "name": "Steelers",
+      "city": "Pittsburgh",
+      "season_stats": {
+        "wins": 5,
+        "losses": 0,
+        "points_for": 125,
+        "points_against": 73
+      }
+    },
+    {
+      "id": "eee2ae19-f3c3-47dc-aacd-a4267b95a7e3",
+      "name": "Texans",
+      "city": "Houston",
+      "season_stats": {
+        "wins": 2,
+        "losses": 4,
+        "points_for": 88,
+        "points_against": 103
+      }
+    },
+    {
+      "id": "3fd38f19-d8c4-4841-8c55-f2cfb667e1e6",
+      "name": "Colts",
+      "city": "Indianapolis",
+      "season_stats": {
+        "wins": 3,
+        "losses": 3,
+        "points_for": 106,
+        "points_against": 116
+      }
+    },
+    {
+      "id": "165ecfb3-12d0-49d3-9ec0-d727239fd71f",
+      "name": "Jaguars",
+      "city": "Jacksonville",
+      "season_stats": {
+        "wins": 4,
+        "losses": 2,
+        "points_for": 109,
+        "points_against": 84
+      }
+    },
+    {
+      "id": "858b52af-2c59-4a8d-86e7-dd6d1e2bb750",
+      "name": "Titans",
+      "city": "Tennessee",
+      "season_stats": {
+        "wins": 3,
+        "losses": 3,
+        "points_for": 102,
+        "points_against": 102
+      }
+    },
+    {
+      "id": "560046ce-54c0-48c9-91b8-9b76371d52f9",
+      "name": "Broncos",
+      "city": "Denver",
+      "season_stats": {
+        "wins": 2,
+        "losses": 4,
+        "points_for": 116,
+        "points_against": 118
+      }
+    },
+    {
+      "id": "1063a9ca-f268-4b03-8119-0aad9b866dd4",
+      "name": "Chiefs",
+      "city": "Kansas City",
       "season_stats": {
         "wins": 5,
         "losses": 1,
-        "points_for": 15,
-        "points_against": 3
+        "points_for": 132,
+        "points_against": 116
+      }
+    },
+    {
+      "id": "b57966f4-9575-4bb5-a8fd-711062d76040",
+      "name": "Raiders",
+      "city": "Las Vegas",
+      "season_stats": {
+        "wins": 3,
+        "losses": 3,
+        "points_for": 139,
+        "points_against": 125
+      }
+    },
+    {
+      "id": "1ff4749e-7591-43ed-928d-a38c3b6783a9",
+      "name": "Chargers",
+      "city": "Los Angeles",
+      "season_stats": {
+        "wins": 2,
+        "losses": 4,
+        "points_for": 98,
+        "points_against": 126
+      }
+    },
+    {
+      "id": "f55fdd46-40ce-4810-bc18-feb4f6b785ab",
+      "name": "Cowboys",
+      "city": "Dallas",
+      "season_stats": {
+        "wins": 5,
+        "losses": 1,
+        "points_for": 147,
+        "points_against": 98
+      }
+    },
+    {
+      "id": "77b7c12a-cd6a-44c8-891b-be32824a7424",
+      "name": "Giants",
+      "city": "New York",
+      "season_stats": {
+        "wins": 1,
+        "losses": 4,
+        "points_for": 109,
+        "points_against": 140
+      }
+    },
+    {
+      "id": "efbba2d6-8632-409e-87df-694550e52d8a",
+      "name": "Eagles",
+      "city": "Philadelphia",
+      "season_stats": {
+        "wins": 3,
+        "losses": 2,
+        "points_for": 141,
+        "points_against": 121
+      }
+    },
+    {
+      "id": "eab0a287-a15e-4015-bea8-7bb9f16bed85",
+      "name": "Commanders",
+      "city": "Washington",
+      "season_stats": {
+        "wins": 2,
+        "losses": 4,
+        "points_for": 90,
+        "points_against": 128
+      }
+    },
+    {
+      "id": "67e929f9-7fa9-4101-9e40-0efedc3d8719",
+      "name": "Bears",
+      "city": "Chicago",
+      "season_stats": {
+        "wins": 3,
+        "losses": 2,
+        "points_for": 113,
+        "points_against": 106
+      }
+    },
+    {
+      "id": "4276c7e9-f570-4162-8319-111fc4b5fcde",
+      "name": "Lions",
+      "city": "Detroit",
+      "season_stats": {
+        "wins": 2,
+        "losses": 3,
+        "points_for": 114,
+        "points_against": 121
+      }
+    },
+    {
+      "id": "20944270-6f4e-4876-8d63-eb2f17ac6451",
+      "name": "Packers",
+      "city": "Green Bay",
+      "season_stats": {
+        "wins": 5,
+        "losses": 1,
+        "points_for": 112,
+        "points_against": 86
+      }
+    },
+    {
+      "id": "e6d022d4-a72e-4900-a8f7-d1c2ee3c1291",
+      "name": "Vikings",
+      "city": "Minnesota",
+      "season_stats": {
+        "wins": 1,
+        "losses": 5,
+        "points_for": 95,
+        "points_against": 121
+      }
+    },
+    {
+      "id": "38661b52-05de-47fa-be73-3493a4a1c359",
+      "name": "Falcons",
+      "city": "Atlanta",
+      "season_stats": {
+        "wins": 4,
+        "losses": 2,
+        "points_for": 131,
+        "points_against": 110
+      }
+    },
+    {
+      "id": "df0ef504-7e1f-4369-8dee-36343679c490",
+      "name": "Panthers",
+      "city": "Carolina",
+      "season_stats": {
+        "wins": 1,
+        "losses": 5,
+        "points_for": 87,
+        "points_against": 140
+      }
+    },
+    {
+      "id": "69196c2a-1589-4db7-b0f4-19a39d5a9a67",
+      "name": "Saints",
+      "city": "New Orleans",
+      "season_stats": {
+        "wins": 4,
+        "losses": 2,
+        "points_for": 131,
+        "points_against": 96
+      }
+    },
+    {
+      "id": "955b5d87-ba7c-46f5-b37c-04258eee980f",
+      "name": "Buccaneers",
+      "city": "Tampa Bay",
+      "season_stats": {
+        "wins": 3,
+        "losses": 3,
+        "points_for": 125,
+        "points_against": 128
+      }
+    },
+    {
+      "id": "899e2e02-ea70-4174-8247-be9fb9d3b8b8",
+      "name": "Cardinals",
+      "city": "Arizona",
+      "season_stats": {
+        "wins": 3,
+        "losses": 3,
+        "points_for": 112,
+        "points_against": 136
+      }
+    },
+    {
+      "id": "d34bdfc8-54fa-47c0-9df2-35851bf17f46",
+      "name": "Rams",
+      "city": "Los Angeles",
+      "season_stats": {
+        "wins": 2,
+        "losses": 4,
+        "points_for": 117,
+        "points_against": 126
+      }
+    },
+    {
+      "id": "ce2c9129-b523-4b36-bc24-47200beb34d0",
+      "name": "49ers",
+      "city": "San Francisco",
+      "season_stats": {
+        "wins": 4,
+        "losses": 2,
+        "points_for": 151,
+        "points_against": 105
+      }
+    },
+    {
+      "id": "26025d69-bc2e-4c51-9dfd-58e6edbfa313",
+      "name": "Seahawks",
+      "city": "Seattle",
+      "season_stats": {
+        "wins": 3,
+        "losses": 3,
+        "points_for": 137,
+        "points_against": 150
       }
     }
   ],
-  "event_count": 746
+  "event_count": 8062,
+  "career_summary": {
+    "player": "Alex Game",
+    "position": "QB",
+    "stars": 1.3890836745234045,
+    "college": "Army",
+    "draft_projection": "UDFA",
+    "nfl_team": "Cleveland",
+    "hs_stats": [
+      {
+        "year": 1,
+        "production_yards": 294,
+        "tds": 2,
+        "awards": [],
+        "overall_before": 62.3,
+        "overall_after": 63.5
+      },
+      {
+        "year": 2,
+        "production_yards": 535,
+        "tds": 5,
+        "awards": [],
+        "overall_before": 63.5,
+        "overall_after": 64.9
+      },
+      {
+        "year": 3,
+        "production_yards": 403,
+        "tds": 2,
+        "awards": [],
+        "overall_before": 64.9,
+        "overall_after": 66.9
+      },
+      {
+        "year": 4,
+        "production_yards": 892,
+        "tds": 6,
+        "awards": [],
+        "overall_before": 66.9,
+        "overall_after": 68.8
+      }
+    ],
+    "college_stats": [
+      {
+        "year": 1,
+        "rating": 68.8,
+        "production_yards": 692,
+        "tds": 6,
+        "rating_after": 71.0
+      },
+      {
+        "year": 2,
+        "rating": 71.0,
+        "production_yards": 1022,
+        "tds": 7,
+        "rating_after": 73.0
+      },
+      {
+        "year": 3,
+        "rating": 73.0,
+        "production_yards": 1348,
+        "tds": 10,
+        "rating_after": 75.1
+      }
+    ],
+    "offers": [
+      {
+        "id": "SF",
+        "team_name": "South Florida",
+        "prestige": 0.35,
+        "location": "South Florida",
+        "random_grade": 0.56
+      },
+      {
+        "id": "ARMY",
+        "team_name": "Army",
+        "prestige": 0.896524064171123,
+        "location": "Army",
+        "random_grade": 0.86
+      },
+      {
+        "id": "ILLI",
+        "team_name": "Illinois",
+        "prestige": 0.6893048128342245,
+        "location": "Illinois",
+        "random_grade": 0.56
+      },
+      {
+        "id": "BAYL",
+        "team_name": "Baylor",
+        "prestige": 0.8764705882352941,
+        "location": "Baylor",
+        "random_grade": 0.61
+      },
+      {
+        "id": "BYU",
+        "team_name": "BYU",
+        "prestige": 0.843048128342246,
+        "location": "BYU",
+        "random_grade": 1.0
+      },
+      {
+        "id": "NMS",
+        "team_name": "New Mexico State",
+        "prestige": 0.48877005347593583,
+        "location": "New Mexico State",
+        "random_grade": 0.81
+      },
+      {
+        "id": "IOWA",
+        "team_name": "Iowa",
+        "prestige": 0.6759358288770053,
+        "location": "Iowa",
+        "random_grade": 0.76
+      },
+      {
+        "id": "NT",
+        "team_name": "North Texas",
+        "prestige": 0.4754010695187166,
+        "location": "North Texas",
+        "random_grade": 0.77
+      }
+    ],
+    "nfl_stats": [
+      {
+        "year": 1,
+        "overall": 75.1,
+        "pass_yards": 3615,
+        "pass_tds": 19,
+        "ints": 3,
+        "rush_yards": 240
+      },
+      {
+        "year": 2,
+        "overall": 75.6,
+        "pass_yards": 3776,
+        "pass_tds": 20,
+        "ints": 6,
+        "rush_yards": 269
+      },
+      {
+        "year": 3,
+        "overall": 74.9,
+        "pass_yards": 3053,
+        "pass_tds": 17,
+        "ints": 6,
+        "rush_yards": 165
+      },
+      {
+        "year": 4,
+        "overall": 74.5,
+        "pass_yards": 3590,
+        "pass_tds": 18,
+        "ints": 3,
+        "rush_yards": 338
+      },
+      {
+        "year": 5,
+        "overall": 74.4,
+        "pass_yards": 3309,
+        "pass_tds": 16,
+        "ints": 3,
+        "rush_yards": 150
+      },
+      {
+        "year": 6,
+        "overall": 75.1,
+        "pass_yards": 3235,
+        "pass_tds": 16,
+        "ints": 5,
+        "rush_yards": 354
+      },
+      {
+        "year": 7,
+        "overall": 74.3,
+        "pass_yards": 3150,
+        "pass_tds": 20,
+        "ints": 3,
+        "rush_yards": 340
+      },
+      {
+        "year": 8,
+        "overall": 73.6,
+        "pass_yards": 3277,
+        "pass_tds": 17,
+        "ints": 5,
+        "rush_yards": 292
+      },
+      {
+        "year": 9,
+        "overall": 73.7,
+        "pass_yards": 3132,
+        "pass_tds": 22,
+        "ints": 3,
+        "rush_yards": 268
+      },
+      {
+        "year": 10,
+        "overall": 73.9,
+        "pass_yards": 2947,
+        "pass_tds": 14,
+        "ints": 4,
+        "rush_yards": 273
+      },
+      {
+        "year": 11,
+        "overall": 73.6,
+        "pass_yards": 3367,
+        "pass_tds": 19,
+        "ints": 3,
+        "rush_yards": 189
+      },
+      {
+        "year": 12,
+        "overall": 73.2,
+        "pass_yards": 2701,
+        "pass_tds": 14,
+        "ints": 3,
+        "rush_yards": 369
+      },
+      {
+        "year": 13,
+        "overall": 72.9,
+        "pass_yards": 3391,
+        "pass_tds": 20,
+        "ints": 3,
+        "rush_yards": 365
+      },
+      {
+        "year": 14,
+        "overall": 72.8,
+        "pass_yards": 3333,
+        "pass_tds": 16,
+        "ints": 6,
+        "rush_yards": 290
+      },
+      {
+        "year": 15,
+        "overall": 73.3,
+        "pass_yards": 3436,
+        "pass_tds": 24,
+        "ints": 6,
+        "rush_yards": 277
+      },
+      {
+        "year": 16,
+        "overall": 73.7,
+        "pass_yards": 3528,
+        "pass_tds": 22,
+        "ints": 3,
+        "rush_yards": 233
+      },
+      {
+        "year": 17,
+        "overall": 73.3,
+        "pass_yards": 3255,
+        "pass_tds": 17,
+        "ints": 3,
+        "rush_yards": 323
+      },
+      {
+        "year": 18,
+        "overall": 72.8,
+        "pass_yards": 2883,
+        "pass_tds": 18,
+        "ints": 6,
+        "rush_yards": 208
+      },
+      {
+        "year": 19,
+        "overall": 72.2,
+        "pass_yards": 3337,
+        "pass_tds": 16,
+        "ints": 4,
+        "rush_yards": 290
+      },
+      {
+        "year": 20,
+        "overall": 72.7,
+        "pass_yards": 3519,
+        "pass_tds": 23,
+        "ints": 3,
+        "rush_yards": 158
+      }
+    ],
+    "awards": {
+      "HS": [],
+      "College": [],
+      "NFL": [
+        {
+          "level": "NFL",
+          "year": 4,
+          "name": "Pro Bowl"
+        },
+        {
+          "level": "NFL",
+          "year": 20,
+          "name": "Pro Bowl"
+        }
+      ]
+    },
+    "retired": false,
+    "retired_year": null,
+    "totals": {
+      "hs_yards": 2124,
+      "hs_tds": 15,
+      "college_yards": 3062,
+      "college_tds": 23,
+      "nfl_pass_yards": 65834,
+      "nfl_pass_tds": 368,
+      "nfl_ints": 81,
+      "awards_count": 2,
+      "awards_breakdown": {
+        "super_bowl": 0,
+        "mvp": 0,
+        "pro_bowl": 2,
+        "all_pro": 0,
+        "heisman": 0,
+        "all_american": 0,
+        "maxwell": 0
+      }
+    },
+    "history": [
+      "Created 2-star QB prospect Alex Game (pot 0.67)",
+      "HS year 1: 294 yds, 2 TDs (Ovr 62.3)",
+      "HS year 1 progression: 62.3 -> 63.5",
+      "HS year 2: 535 yds, 5 TDs (Ovr 63.5)",
+      "HS year 2 progression: 63.5 -> 64.9",
+      "HS year 3: 403 yds, 2 TDs (Ovr 64.9)",
+      "HS year 3 progression: 64.9 -> 66.9",
+      "HS year 4: 892 yds, 6 TDs (Ovr 66.9)",
+      "HS year 4 progression: 66.9 -> 68.8",
+      "Generated 8 college offers (max prestige 0.90).",
+      "Committed to Army.",
+      "College year 1: rating 68.8, 692 yds, 6 TDs",
+      "College year 1 progression: 68.8 -> 71.0",
+      "College year 2: rating 71.0, 1022 yds, 7 TDs",
+      "College year 2 progression: 71.0 -> 73.0",
+      "College year 3: rating 73.0, 1348 yds, 10 TDs",
+      "College year 3 progression: 73.0 -> 75.1",
+      "Draft outcome: UDFA, landed with Cleveland.",
+      "NFL year 1: Ovr 75.1, 3615 pass yds, 19 TD, 3 INT",
+      "NFL year 2: Ovr 75.6, 3776 pass yds, 20 TD, 6 INT",
+      "NFL year 3: Ovr 74.9, 3053 pass yds, 17 TD, 6 INT",
+      "NFL year 4: Ovr 74.5, 3590 pass yds, 18 TD, 3 INT",
+      "NFL award: Pro Bowl (Y4)",
+      "NFL year 5: Ovr 74.4, 3309 pass yds, 16 TD, 3 INT",
+      "NFL year 6: Ovr 75.1, 3235 pass yds, 16 TD, 5 INT",
+      "NFL year 7: Ovr 74.3, 3150 pass yds, 20 TD, 3 INT",
+      "NFL year 8: Ovr 73.6, 3277 pass yds, 17 TD, 5 INT",
+      "NFL year 9: Ovr 73.7, 3132 pass yds, 22 TD, 3 INT",
+      "NFL year 10: Ovr 73.9, 2947 pass yds, 14 TD, 4 INT",
+      "NFL year 11: Ovr 73.6, 3367 pass yds, 19 TD, 3 INT",
+      "NFL year 12: Ovr 73.2, 2701 pass yds, 14 TD, 3 INT",
+      "NFL year 13: Ovr 72.9, 3391 pass yds, 20 TD, 3 INT",
+      "NFL year 14: Ovr 72.8, 3333 pass yds, 16 TD, 6 INT",
+      "NFL year 15: Ovr 73.3, 3436 pass yds, 24 TD, 6 INT",
+      "NFL year 16: Ovr 73.7, 3528 pass yds, 22 TD, 3 INT",
+      "NFL year 17: Ovr 73.3, 3255 pass yds, 17 TD, 3 INT",
+      "NFL year 18: Ovr 72.8, 2883 pass yds, 18 TD, 6 INT",
+      "NFL year 19: Ovr 72.2, 3337 pass yds, 16 TD, 4 INT",
+      "NFL year 20: Ovr 72.7, 3519 pass yds, 23 TD, 3 INT",
+      "NFL award: Pro Bowl (Y20)",
+      "Awards summary \u2014 SB:0 MVP:0 ProBowls:2 All-Pro:0 Heisman:0 All-American:0 Maxwell:0"
+    ]
+  },
+  "nfl_season": {
+    "champion": "Chargers",
+    "mvps": [
+      {
+        "player_id": "8bc84a03-6edb-4640-87cf-60ab6a5d4fc2",
+        "player_name": "Chargers RB1",
+        "score": 2089.3,
+        "impact": 2099.3,
+        "justification": "2999 rushing yards; played through 2 injury events"
+      },
+      {
+        "player_id": "bde9dffc-111d-414f-83c4-90824c5c1f6c",
+        "player_name": "Giants RB1",
+        "score": 2023.6,
+        "impact": 2028.6,
+        "justification": "2898 rushing yards; played through 1 injury events"
+      },
+      {
+        "player_id": "b7ce23e7-6f4b-40d0-8e87-810f5ab47468",
+        "player_name": "Dolphins WR1",
+        "score": 1995.1,
+        "impact": 1995.1,
+        "justification": "1730 passing yards"
+      }
+    ],
+    "playoffs": [
+      {
+        "round": 1,
+        "home": "Titans",
+        "away": "Lions",
+        "score": {
+          "home": 16,
+          "away": 13
+        },
+        "winner": "Titans"
+      },
+      {
+        "round": 1,
+        "home": "Packers",
+        "away": "Dolphins",
+        "score": {
+          "home": 15,
+          "away": 27
+        },
+        "winner": "Dolphins"
+      },
+      {
+        "round": 1,
+        "home": "Chargers",
+        "away": "Bills",
+        "score": {
+          "home": 31,
+          "away": 9
+        },
+        "winner": "Chargers"
+      },
+      {
+        "round": 1,
+        "home": "Panthers",
+        "away": "Giants",
+        "score": {
+          "home": 6,
+          "away": 15
+        },
+        "winner": "Giants"
+      },
+      {
+        "round": 2,
+        "home": "Titans",
+        "away": "Dolphins",
+        "score": {
+          "home": 13,
+          "away": 19
+        },
+        "winner": "Dolphins"
+      },
+      {
+        "round": 2,
+        "home": "Chargers",
+        "away": "Giants",
+        "score": {
+          "home": 19,
+          "away": 19
+        },
+        "winner": "Chargers"
+      },
+      {
+        "round": 3,
+        "home": "Dolphins",
+        "away": "Chargers",
+        "score": {
+          "home": 19,
+          "away": 24
+        },
+        "winner": "Chargers"
+      }
+    ],
+    "standings": [
+      {
+        "team": "Titans",
+        "city": "Tennessee",
+        "wins": 13,
+        "losses": 6,
+        "pf": 368,
+        "pa": 318
+      },
+      {
+        "team": "Lions",
+        "city": "Detroit",
+        "wins": 11,
+        "losses": 6,
+        "pf": 373,
+        "pa": 307
+      },
+      {
+        "team": "Packers",
+        "city": "Green Bay",
+        "wins": 11,
+        "losses": 7,
+        "pf": 382,
+        "pa": 327
+      },
+      {
+        "team": "Dolphins",
+        "city": "Miami",
+        "wins": 13,
+        "losses": 5,
+        "pf": 412,
+        "pa": 343
+      },
+      {
+        "team": "Chargers",
+        "city": "Los Angeles",
+        "wins": 13,
+        "losses": 4,
+        "pf": 403,
+        "pa": 349
+      },
+      {
+        "team": "Bills",
+        "city": "Buffalo",
+        "wins": 11,
+        "losses": 6,
+        "pf": 345,
+        "pa": 344
+      },
+      {
+        "team": "Panthers",
+        "city": "Carolina",
+        "wins": 11,
+        "losses": 7,
+        "pf": 339,
+        "pa": 337
+      },
+      {
+        "team": "Giants",
+        "city": "New York",
+        "wins": 11,
+        "losses": 7,
+        "pf": 390,
+        "pa": 326
+      },
+      {
+        "team": "Texans",
+        "city": "Houston",
+        "wins": 9,
+        "losses": 5,
+        "pf": 312,
+        "pa": 264
+      },
+      {
+        "team": "Jets",
+        "city": "New York",
+        "wins": 9,
+        "losses": 8,
+        "pf": 370,
+        "pa": 327
+      },
+      {
+        "team": "Chiefs",
+        "city": "Kansas City",
+        "wins": 9,
+        "losses": 8,
+        "pf": 356,
+        "pa": 334
+      },
+      {
+        "team": "Browns",
+        "city": "Cleveland",
+        "wins": 9,
+        "losses": 7,
+        "pf": 318,
+        "pa": 302
+      },
+      {
+        "team": "Jaguars",
+        "city": "Jacksonville",
+        "wins": 9,
+        "losses": 7,
+        "pf": 342,
+        "pa": 332
+      },
+      {
+        "team": "Cowboys",
+        "city": "Dallas",
+        "wins": 9,
+        "losses": 7,
+        "pf": 306,
+        "pa": 305
+      },
+      {
+        "team": "Bears",
+        "city": "Chicago",
+        "wins": 8,
+        "losses": 9,
+        "pf": 343,
+        "pa": 311
+      },
+      {
+        "team": "Commanders",
+        "city": "Washington",
+        "wins": 8,
+        "losses": 7,
+        "pf": 341,
+        "pa": 354
+      },
+      {
+        "team": "Cardinals",
+        "city": "Arizona",
+        "wins": 8,
+        "losses": 8,
+        "pf": 276,
+        "pa": 293
+      },
+      {
+        "team": "Bengals",
+        "city": "Cincinnati",
+        "wins": 7,
+        "losses": 8,
+        "pf": 342,
+        "pa": 323
+      },
+      {
+        "team": "Steelers",
+        "city": "Pittsburgh",
+        "wins": 7,
+        "losses": 9,
+        "pf": 331,
+        "pa": 328
+      },
+      {
+        "team": "Falcons",
+        "city": "Atlanta",
+        "wins": 7,
+        "losses": 6,
+        "pf": 302,
+        "pa": 310
+      },
+      {
+        "team": "Seahawks",
+        "city": "Seattle",
+        "wins": 7,
+        "losses": 8,
+        "pf": 344,
+        "pa": 364
+      },
+      {
+        "team": "Raiders",
+        "city": "Las Vegas",
+        "wins": 7,
+        "losses": 7,
+        "pf": 333,
+        "pa": 355
+      },
+      {
+        "team": "Eagles",
+        "city": "Philadelphia",
+        "wins": 7,
+        "losses": 8,
+        "pf": 289,
+        "pa": 312
+      },
+      {
+        "team": "Rams",
+        "city": "Los Angeles",
+        "wins": 6,
+        "losses": 11,
+        "pf": 347,
+        "pa": 371
+      },
+      {
+        "team": "Vikings",
+        "city": "Minnesota",
+        "wins": 6,
+        "losses": 10,
+        "pf": 352,
+        "pa": 380
+      },
+      {
+        "team": "Patriots",
+        "city": "New England",
+        "wins": 6,
+        "losses": 10,
+        "pf": 313,
+        "pa": 346
+      },
+      {
+        "team": "Colts",
+        "city": "Indianapolis",
+        "wins": 5,
+        "losses": 10,
+        "pf": 321,
+        "pa": 328
+      },
+      {
+        "team": "49ers",
+        "city": "San Francisco",
+        "wins": 5,
+        "losses": 10,
+        "pf": 321,
+        "pa": 348
+      },
+      {
+        "team": "Broncos",
+        "city": "Denver",
+        "wins": 5,
+        "losses": 9,
+        "pf": 303,
+        "pa": 338
+      },
+      {
+        "team": "Ravens",
+        "city": "Baltimore",
+        "wins": 4,
+        "losses": 11,
+        "pf": 254,
+        "pa": 334
+      },
+      {
+        "team": "Saints",
+        "city": "New Orleans",
+        "wins": 3,
+        "losses": 11,
+        "pf": 300,
+        "pa": 389
+      },
+      {
+        "team": "Buccaneers",
+        "city": "Tampa Bay",
+        "wins": 2,
+        "losses": 14,
+        "pf": 278,
+        "pa": 407
+      }
+    ],
+    "games": [
+      {
+        "week": 1,
+        "home": "Buccaneers",
+        "away": "Bengals",
+        "score": {
+          "home": 20,
+          "away": 30
+        }
+      },
+      {
+        "week": 1,
+        "home": "Cardinals",
+        "away": "Lions",
+        "score": {
+          "home": 13,
+          "away": 23
+        }
+      },
+      {
+        "week": 1,
+        "home": "Saints",
+        "away": "Falcons",
+        "score": {
+          "home": 16,
+          "away": 26
+        }
+      },
+      {
+        "week": 1,
+        "home": "Cowboys",
+        "away": "Seahawks",
+        "score": {
+          "home": 20,
+          "away": 26
+        }
+      },
+      {
+        "week": 1,
+        "home": "Broncos",
+        "away": "Jaguars",
+        "score": {
+          "home": 19,
+          "away": 19
+        }
+      },
+      {
+        "week": 1,
+        "home": "Commanders",
+        "away": "Giants",
+        "score": {
+          "home": 10,
+          "away": 19
+        }
+      },
+      {
+        "week": 1,
+        "home": "Eagles",
+        "away": "Jets",
+        "score": {
+          "home": 27,
+          "away": 23
+        }
+      },
+      {
+        "week": 1,
+        "home": "Patriots",
+        "away": "Browns",
+        "score": {
+          "home": 27,
+          "away": 19
+        }
+      },
+      {
+        "week": 1,
+        "home": "Raiders",
+        "away": "Bears",
+        "score": {
+          "home": 23,
+          "away": 22
+        }
+      },
+      {
+        "week": 1,
+        "home": "Colts",
+        "away": "Chargers",
+        "score": {
+          "home": 19,
+          "away": 23
+        }
+      },
+      {
+        "week": 1,
+        "home": "Packers",
+        "away": "Vikings",
+        "score": {
+          "home": 19,
+          "away": 27
+        }
+      },
+      {
+        "week": 1,
+        "home": "Titans",
+        "away": "Dolphins",
+        "score": {
+          "home": 23,
+          "away": 6
+        }
+      },
+      {
+        "week": 1,
+        "home": "Rams",
+        "away": "Panthers",
+        "score": {
+          "home": 31,
+          "away": 13
+        }
+      },
+      {
+        "week": 1,
+        "home": "Chiefs",
+        "away": "Bills",
+        "score": {
+          "home": 27,
+          "away": 12
+        }
+      },
+      {
+        "week": 1,
+        "home": "Ravens",
+        "away": "49ers",
+        "score": {
+          "home": 20,
+          "away": 16
+        }
+      },
+      {
+        "week": 1,
+        "home": "Steelers",
+        "away": "Texans",
+        "score": {
+          "home": 9,
+          "away": 23
+        }
+      },
+      {
+        "week": 2,
+        "home": "Chiefs",
+        "away": "Panthers",
+        "score": {
+          "home": 16,
+          "away": 19
+        }
+      },
+      {
+        "week": 2,
+        "home": "Packers",
+        "away": "Bears",
+        "score": {
+          "home": 13,
+          "away": 9
+        }
+      },
+      {
+        "week": 2,
+        "home": "Falcons",
+        "away": "Raiders",
+        "score": {
+          "home": 26,
+          "away": 16
+        }
+      },
+      {
+        "week": 2,
+        "home": "Seahawks",
+        "away": "Buccaneers",
+        "score": {
+          "home": 26,
+          "away": 16
+        }
+      },
+      {
+        "week": 2,
+        "home": "Ravens",
+        "away": "Jaguars",
+        "score": {
+          "home": 9,
+          "away": 19
+        }
+      },
+      {
+        "week": 2,
+        "home": "Bengals",
+        "away": "Broncos",
+        "score": {
+          "home": 30,
+          "away": 12
+        }
+      },
+      {
+        "week": 2,
+        "home": "Giants",
+        "away": "Texans",
+        "score": {
+          "home": 23,
+          "away": 20
+        }
+      },
+      {
+        "week": 2,
+        "home": "Cowboys",
+        "away": "Saints",
+        "score": {
+          "home": 9,
+          "away": 12
+        }
+      },
+      {
+        "week": 2,
+        "home": "Steelers",
+        "away": "Dolphins",
+        "score": {
+          "home": 19,
+          "away": 27
+        }
+      },
+      {
+        "week": 2,
+        "home": "Jets",
+        "away": "Commanders",
+        "score": {
+          "home": 31,
+          "away": 20
+        }
+      },
+      {
+        "week": 2,
+        "home": "49ers",
+        "away": "Vikings",
+        "score": {
+          "home": 23,
+          "away": 26
+        }
+      },
+      {
+        "week": 2,
+        "home": "Lions",
+        "away": "Colts",
+        "score": {
+          "home": 20,
+          "away": 22
+        }
+      },
+      {
+        "week": 2,
+        "home": "Rams",
+        "away": "Patriots",
+        "score": {
+          "home": 23,
+          "away": 16
+        }
+      },
+      {
+        "week": 2,
+        "home": "Chargers",
+        "away": "Eagles",
+        "score": {
+          "home": 12,
+          "away": 12
+        }
+      },
+      {
+        "week": 2,
+        "home": "Titans",
+        "away": "Browns",
+        "score": {
+          "home": 10,
+          "away": 13
+        }
+      },
+      {
+        "week": 2,
+        "home": "Bills",
+        "away": "Cardinals",
+        "score": {
+          "home": 19,
+          "away": 13
+        }
+      },
+      {
+        "week": 3,
+        "home": "Steelers",
+        "away": "Dolphins",
+        "score": {
+          "home": 24,
+          "away": 15
+        }
+      },
+      {
+        "week": 3,
+        "home": "Bengals",
+        "away": "Jets",
+        "score": {
+          "home": 23,
+          "away": 12
+        }
+      },
+      {
+        "week": 3,
+        "home": "Giants",
+        "away": "Patriots",
+        "score": {
+          "home": 23,
+          "away": 27
+        }
+      },
+      {
+        "week": 3,
+        "home": "Falcons",
+        "away": "Bills",
+        "score": {
+          "home": 12,
+          "away": 23
+        }
+      },
+      {
+        "week": 3,
+        "home": "Ravens",
+        "away": "Panthers",
+        "score": {
+          "home": 12,
+          "away": 15
+        }
+      },
+      {
+        "week": 3,
+        "home": "Raiders",
+        "away": "Seahawks",
+        "score": {
+          "home": 23,
+          "away": 20
+        }
+      },
+      {
+        "week": 3,
+        "home": "Chargers",
+        "away": "Cardinals",
+        "score": {
+          "home": 19,
+          "away": 17
+        }
+      },
+      {
+        "week": 3,
+        "home": "Browns",
+        "away": "Texans",
+        "score": {
+          "home": 9,
+          "away": 16
+        }
+      },
+      {
+        "week": 3,
+        "home": "Jaguars",
+        "away": "Broncos",
+        "score": {
+          "home": 17,
+          "away": 13
+        }
+      },
+      {
+        "week": 3,
+        "home": "Eagles",
+        "away": "Titans",
+        "score": {
+          "home": 16,
+          "away": 30
+        }
+      },
+      {
+        "week": 3,
+        "home": "Buccaneers",
+        "away": "Lions",
+        "score": {
+          "home": 10,
+          "away": 20
+        }
+      },
+      {
+        "week": 3,
+        "home": "49ers",
+        "away": "Bears",
+        "score": {
+          "home": 14,
+          "away": 12
+        }
+      },
+      {
+        "week": 3,
+        "home": "Vikings",
+        "away": "Saints",
+        "score": {
+          "home": 16,
+          "away": 23
+        }
+      },
+      {
+        "week": 3,
+        "home": "Commanders",
+        "away": "Packers",
+        "score": {
+          "home": 15,
+          "away": 35
+        }
+      },
+      {
+        "week": 3,
+        "home": "Colts",
+        "away": "Chiefs",
+        "score": {
+          "home": 19,
+          "away": 23
+        }
+      },
+      {
+        "week": 3,
+        "home": "Cowboys",
+        "away": "Rams",
+        "score": {
+          "home": 19,
+          "away": 17
+        }
+      },
+      {
+        "week": 4,
+        "home": "Patriots",
+        "away": "Cardinals",
+        "score": {
+          "home": 22,
+          "away": 19
+        }
+      },
+      {
+        "week": 4,
+        "home": "Lions",
+        "away": "Texans",
+        "score": {
+          "home": 15,
+          "away": 24
+        }
+      },
+      {
+        "week": 4,
+        "home": "Bears",
+        "away": "Buccaneers",
+        "score": {
+          "home": 30,
+          "away": 16
+        }
+      },
+      {
+        "week": 4,
+        "home": "Colts",
+        "away": "Steelers",
+        "score": {
+          "home": 23,
+          "away": 34
+        }
+      },
+      {
+        "week": 4,
+        "home": "Bengals",
+        "away": "Cowboys",
+        "score": {
+          "home": 20,
+          "away": 28
+        }
+      },
+      {
+        "week": 4,
+        "home": "Eagles",
+        "away": "Ravens",
+        "score": {
+          "home": 26,
+          "away": 10
+        }
+      },
+      {
+        "week": 4,
+        "home": "Raiders",
+        "away": "Falcons",
+        "score": {
+          "home": 16,
+          "away": 19
+        }
+      },
+      {
+        "week": 4,
+        "home": "Commanders",
+        "away": "Jaguars",
+        "score": {
+          "home": 16,
+          "away": 31
+        }
+      },
+      {
+        "week": 4,
+        "home": "Seahawks",
+        "away": "Rams",
+        "score": {
+          "home": 20,
+          "away": 19
+        }
+      },
+      {
+        "week": 4,
+        "home": "Giants",
+        "away": "Saints",
+        "score": {
+          "home": 23,
+          "away": 20
+        }
+      },
+      {
+        "week": 4,
+        "home": "Dolphins",
+        "away": "Packers",
+        "score": {
+          "home": 23,
+          "away": 16
+        }
+      },
+      {
+        "week": 4,
+        "home": "Vikings",
+        "away": "Panthers",
+        "score": {
+          "home": 16,
+          "away": 20
+        }
+      },
+      {
+        "week": 4,
+        "home": "49ers",
+        "away": "Titans",
+        "score": {
+          "home": 20,
+          "away": 9
+        }
+      },
+      {
+        "week": 4,
+        "home": "Jets",
+        "away": "Broncos",
+        "score": {
+          "home": 16,
+          "away": 20
+        }
+      },
+      {
+        "week": 4,
+        "home": "Bills",
+        "away": "Chargers",
+        "score": {
+          "home": 16,
+          "away": 19
+        }
+      },
+      {
+        "week": 4,
+        "home": "Browns",
+        "away": "Chiefs",
+        "score": {
+          "home": 20,
+          "away": 16
+        }
+      },
+      {
+        "week": 5,
+        "home": "Texans",
+        "away": "Lions",
+        "score": {
+          "home": 6,
+          "away": 9
+        }
+      },
+      {
+        "week": 5,
+        "home": "Patriots",
+        "away": "Rams",
+        "score": {
+          "home": 16,
+          "away": 20
+        }
+      },
+      {
+        "week": 5,
+        "home": "Bengals",
+        "away": "Packers",
+        "score": {
+          "home": 27,
+          "away": 20
+        }
+      },
+      {
+        "week": 5,
+        "home": "Panthers",
+        "away": "Browns",
+        "score": {
+          "home": 3,
+          "away": 13
+        }
+      },
+      {
+        "week": 5,
+        "home": "Giants",
+        "away": "Commanders",
+        "score": {
+          "home": 19,
+          "away": 20
+        }
+      },
+      {
+        "week": 5,
+        "home": "Jaguars",
+        "away": "Seahawks",
+        "score": {
+          "home": 13,
+          "away": 19
+        }
+      },
+      {
+        "week": 5,
+        "home": "Chargers",
+        "away": "Ravens",
+        "score": {
+          "home": 24,
+          "away": 12
+        }
+      },
+      {
+        "week": 5,
+        "home": "Bears",
+        "away": "Vikings",
+        "score": {
+          "home": 24,
+          "away": 26
+        }
+      },
+      {
+        "week": 5,
+        "home": "Chiefs",
+        "away": "Eagles",
+        "score": {
+          "home": 13,
+          "away": 16
+        }
+      },
+      {
+        "week": 5,
+        "home": "Saints",
+        "away": "Falcons",
+        "score": {
+          "home": 17,
+          "away": 17
+        }
+      },
+      {
+        "week": 5,
+        "home": "Steelers",
+        "away": "Buccaneers",
+        "score": {
+          "home": 31,
+          "away": 13
+        }
+      },
+      {
+        "week": 5,
+        "home": "Cardinals",
+        "away": "Broncos",
+        "score": {
+          "home": 13,
+          "away": 6
+        }
+      },
+      {
+        "week": 5,
+        "home": "49ers",
+        "away": "Jets",
+        "score": {
+          "home": 20,
+          "away": 27
+        }
+      },
+      {
+        "week": 5,
+        "home": "Colts",
+        "away": "Raiders",
+        "score": {
+          "home": 13,
+          "away": 16
+        }
+      },
+      {
+        "week": 5,
+        "home": "Bills",
+        "away": "Dolphins",
+        "score": {
+          "home": 20,
+          "away": 19
+        }
+      },
+      {
+        "week": 5,
+        "home": "Cowboys",
+        "away": "Titans",
+        "score": {
+          "home": 6,
+          "away": 20
+        }
+      },
+      {
+        "week": 6,
+        "home": "Colts",
+        "away": "Dolphins",
+        "score": {
+          "home": 20,
+          "away": 23
+        }
+      },
+      {
+        "week": 6,
+        "home": "Broncos",
+        "away": "Lions",
+        "score": {
+          "home": 24,
+          "away": 30
+        }
+      },
+      {
+        "week": 6,
+        "home": "Steelers",
+        "away": "Packers",
+        "score": {
+          "home": 16,
+          "away": 20
+        }
+      },
+      {
+        "week": 6,
+        "home": "Browns",
+        "away": "Eagles",
+        "score": {
+          "home": 20,
+          "away": 23
+        }
+      },
+      {
+        "week": 6,
+        "home": "Rams",
+        "away": "Patriots",
+        "score": {
+          "home": 17,
+          "away": 24
+        }
+      },
+      {
+        "week": 6,
+        "home": "Bengals",
+        "away": "Bills",
+        "score": {
+          "home": 20,
+          "away": 30
+        }
+      },
+      {
+        "week": 6,
+        "home": "Panthers",
+        "away": "Giants",
+        "score": {
+          "home": 16,
+          "away": 23
+        }
+      },
+      {
+        "week": 6,
+        "home": "Cardinals",
+        "away": "Jaguars",
+        "score": {
+          "home": 13,
+          "away": 17
+        }
+      },
+      {
+        "week": 6,
+        "home": "Seahawks",
+        "away": "Ravens",
+        "score": {
+          "home": 19,
+          "away": 13
+        }
+      },
+      {
+        "week": 6,
+        "home": "Cowboys",
+        "away": "Titans",
+        "score": {
+          "home": 17,
+          "away": 23
+        }
+      },
+      {
+        "week": 6,
+        "home": "49ers",
+        "away": "Falcons",
+        "score": {
+          "home": 24,
+          "away": 12
+        }
+      },
+      {
+        "week": 6,
+        "home": "Vikings",
+        "away": "Chiefs",
+        "score": {
+          "home": 13,
+          "away": 23
+        }
+      },
+      {
+        "week": 6,
+        "home": "Saints",
+        "away": "Jets",
+        "score": {
+          "home": 13,
+          "away": 23
+        }
+      },
+      {
+        "week": 6,
+        "home": "Commanders",
+        "away": "Bears",
+        "score": {
+          "home": 12,
+          "away": 13
+        }
+      },
+      {
+        "week": 6,
+        "home": "Buccaneers",
+        "away": "Texans",
+        "score": {
+          "home": 19,
+          "away": 19
+        }
+      },
+      {
+        "week": 6,
+        "home": "Raiders",
+        "away": "Chargers",
+        "score": {
+          "home": 20,
+          "away": 26
+        }
+      },
+      {
+        "week": 7,
+        "home": "Vikings",
+        "away": "49ers",
+        "score": {
+          "home": 20,
+          "away": 23
+        }
+      },
+      {
+        "week": 7,
+        "home": "Bears",
+        "away": "Patriots",
+        "score": {
+          "home": 19,
+          "away": 10
+        }
+      },
+      {
+        "week": 7,
+        "home": "Titans",
+        "away": "Colts",
+        "score": {
+          "home": 26,
+          "away": 22
+        }
+      },
+      {
+        "week": 7,
+        "home": "Chiefs",
+        "away": "Panthers",
+        "score": {
+          "home": 23,
+          "away": 16
+        }
+      },
+      {
+        "week": 7,
+        "home": "Chargers",
+        "away": "Buccaneers",
+        "score": {
+          "home": 30,
+          "away": 13
+        }
+      },
+      {
+        "week": 7,
+        "home": "Falcons",
+        "away": "Giants",
+        "score": {
+          "home": 23,
+          "away": 16
+        }
+      },
+      {
+        "week": 7,
+        "home": "Browns",
+        "away": "Saints",
+        "score": {
+          "home": 24,
+          "away": 19
+        }
+      },
+      {
+        "week": 7,
+        "home": "Ravens",
+        "away": "Cowboys",
+        "score": {
+          "home": 13,
+          "away": 17
+        }
+      },
+      {
+        "week": 7,
+        "home": "Broncos",
+        "away": "Eagles",
+        "score": {
+          "home": 16,
+          "away": 12
+        }
+      },
+      {
+        "week": 7,
+        "home": "Steelers",
+        "away": "Cardinals",
+        "score": {
+          "home": 23,
+          "away": 10
+        }
+      },
+      {
+        "week": 7,
+        "home": "Jaguars",
+        "away": "Dolphins",
+        "score": {
+          "home": 27,
+          "away": 18
+        }
+      },
+      {
+        "week": 7,
+        "home": "Seahawks",
+        "away": "Packers",
+        "score": {
+          "home": 19,
+          "away": 20
+        }
+      },
+      {
+        "week": 7,
+        "home": "Texans",
+        "away": "Jets",
+        "score": {
+          "home": 9,
+          "away": 16
+        }
+      },
+      {
+        "week": 7,
+        "home": "Commanders",
+        "away": "Rams",
+        "score": {
+          "home": 23,
+          "away": 22
+        }
+      },
+      {
+        "week": 7,
+        "home": "Lions",
+        "away": "Bills",
+        "score": {
+          "home": 13,
+          "away": 19
+        }
+      },
+      {
+        "week": 7,
+        "home": "Bengals",
+        "away": "Raiders",
+        "score": {
+          "home": 13,
+          "away": 18
+        }
+      },
+      {
+        "week": 8,
+        "home": "49ers",
+        "away": "Falcons",
+        "score": {
+          "home": 15,
+          "away": 20
+        }
+      },
+      {
+        "week": 8,
+        "home": "Raiders",
+        "away": "Jets",
+        "score": {
+          "home": 14,
+          "away": 26
+        }
+      },
+      {
+        "week": 8,
+        "home": "Steelers",
+        "away": "Eagles",
+        "score": {
+          "home": 20,
+          "away": 12
+        }
+      },
+      {
+        "week": 8,
+        "home": "Vikings",
+        "away": "Panthers",
+        "score": {
+          "home": 26,
+          "away": 16
+        }
+      },
+      {
+        "week": 8,
+        "home": "Jaguars",
+        "away": "Chiefs",
+        "score": {
+          "home": 24,
+          "away": 26
+        }
+      },
+      {
+        "week": 8,
+        "home": "Broncos",
+        "away": "Giants",
+        "score": {
+          "home": 12,
+          "away": 27
+        }
+      },
+      {
+        "week": 8,
+        "home": "Cardinals",
+        "away": "Patriots",
+        "score": {
+          "home": 19,
+          "away": 15
+        }
+      },
+      {
+        "week": 8,
+        "home": "Dolphins",
+        "away": "Chargers",
+        "score": {
+          "home": 23,
+          "away": 13
+        }
+      },
+      {
+        "week": 8,
+        "home": "Commanders",
+        "away": "Colts",
+        "score": {
+          "home": 23,
+          "away": 22
+        }
+      },
+      {
+        "week": 8,
+        "home": "Saints",
+        "away": "Bengals",
+        "score": {
+          "home": 20,
+          "away": 20
+        }
+      },
+      {
+        "week": 8,
+        "home": "Bills",
+        "away": "Packers",
+        "score": {
+          "home": 13,
+          "away": 19
+        }
+      },
+      {
+        "week": 8,
+        "home": "Browns",
+        "away": "Buccaneers",
+        "score": {
+          "home": 16,
+          "away": 23
+        }
+      },
+      {
+        "week": 8,
+        "home": "Ravens",
+        "away": "Seahawks",
+        "score": {
+          "home": 16,
+          "away": 26
+        }
+      },
+      {
+        "week": 8,
+        "home": "Rams",
+        "away": "Titans",
+        "score": {
+          "home": 22,
+          "away": 27
+        }
+      },
+      {
+        "week": 8,
+        "home": "Cowboys",
+        "away": "Lions",
+        "score": {
+          "home": 23,
+          "away": 20
+        }
+      },
+      {
+        "week": 8,
+        "home": "Bears",
+        "away": "Texans",
+        "score": {
+          "home": 9,
+          "away": 15
+        }
+      },
+      {
+        "week": 9,
+        "home": "Bengals",
+        "away": "Eagles",
+        "score": {
+          "home": 12,
+          "away": 17
+        }
+      },
+      {
+        "week": 9,
+        "home": "Patriots",
+        "away": "Colts",
+        "score": {
+          "home": 20,
+          "away": 15
+        }
+      },
+      {
+        "week": 9,
+        "home": "Chiefs",
+        "away": "Bears",
+        "score": {
+          "home": 34,
+          "away": 24
+        }
+      },
+      {
+        "week": 9,
+        "home": "Cowboys",
+        "away": "Jaguars",
+        "score": {
+          "home": 19,
+          "away": 6
+        }
+      },
+      {
+        "week": 9,
+        "home": "Ravens",
+        "away": "Titans",
+        "score": {
+          "home": 23,
+          "away": 14
+        }
+      },
+      {
+        "week": 9,
+        "home": "Jets",
+        "away": "Chargers",
+        "score": {
+          "home": 19,
+          "away": 23
+        }
+      },
+      {
+        "week": 9,
+        "home": "Rams",
+        "away": "Buccaneers",
+        "score": {
+          "home": 23,
+          "away": 19
+        }
+      },
+      {
+        "week": 9,
+        "home": "Falcons",
+        "away": "Cardinals",
+        "score": {
+          "home": 23,
+          "away": 27
+        }
+      },
+      {
+        "week": 9,
+        "home": "Dolphins",
+        "away": "Browns",
+        "score": {
+          "home": 12,
+          "away": 9
+        }
+      },
+      {
+        "week": 9,
+        "home": "Texans",
+        "away": "Broncos",
+        "score": {
+          "home": 23,
+          "away": 23
+        }
+      },
+      {
+        "week": 9,
+        "home": "Saints",
+        "away": "Vikings",
+        "score": {
+          "home": 23,
+          "away": 22
+        }
+      },
+      {
+        "week": 9,
+        "home": "Giants",
+        "away": "Lions",
+        "score": {
+          "home": 15,
+          "away": 27
+        }
+      },
+      {
+        "week": 9,
+        "home": "49ers",
+        "away": "Panthers",
+        "score": {
+          "home": 13,
+          "away": 16
+        }
+      },
+      {
+        "week": 9,
+        "home": "Steelers",
+        "away": "Packers",
+        "score": {
+          "home": 9,
+          "away": 24
+        }
+      },
+      {
+        "week": 9,
+        "home": "Commanders",
+        "away": "Bills",
+        "score": {
+          "home": 20,
+          "away": 22
+        }
+      },
+      {
+        "week": 9,
+        "home": "Seahawks",
+        "away": "Raiders",
+        "score": {
+          "home": 20,
+          "away": 31
+        }
+      },
+      {
+        "week": 10,
+        "home": "Panthers",
+        "away": "Bears",
+        "score": {
+          "home": 31,
+          "away": 16
+        }
+      },
+      {
+        "week": 10,
+        "home": "Buccaneers",
+        "away": "Chargers",
+        "score": {
+          "home": 16,
+          "away": 19
+        }
+      },
+      {
+        "week": 10,
+        "home": "Jets",
+        "away": "Raiders",
+        "score": {
+          "home": 16,
+          "away": 23
+        }
+      },
+      {
+        "week": 10,
+        "home": "Bills",
+        "away": "Broncos",
+        "score": {
+          "home": 19,
+          "away": 16
+        }
+      },
+      {
+        "week": 10,
+        "home": "Ravens",
+        "away": "Colts",
+        "score": {
+          "home": 13,
+          "away": 13
+        }
+      },
+      {
+        "week": 10,
+        "home": "Giants",
+        "away": "Chiefs",
+        "score": {
+          "home": 17,
+          "away": 27
+        }
+      },
+      {
+        "week": 10,
+        "home": "Commanders",
+        "away": "Eagles",
+        "score": {
+          "home": 23,
+          "away": 12
+        }
+      },
+      {
+        "week": 10,
+        "home": "49ers",
+        "away": "Texans",
+        "score": {
+          "home": 17,
+          "away": 30
+        }
+      },
+      {
+        "week": 10,
+        "home": "Vikings",
+        "away": "Cowboys",
+        "score": {
+          "home": 16,
+          "away": 24
+        }
+      },
+      {
+        "week": 10,
+        "home": "Packers",
+        "away": "Saints",
+        "score": {
+          "home": 20,
+          "away": 12
+        }
+      },
+      {
+        "week": 10,
+        "home": "Rams",
+        "away": "Lions",
+        "score": {
+          "home": 16,
+          "away": 23
+        }
+      },
+      {
+        "week": 10,
+        "home": "Titans",
+        "away": "Cardinals",
+        "score": {
+          "home": 10,
+          "away": 12
+        }
+      },
+      {
+        "week": 10,
+        "home": "Falcons",
+        "away": "Steelers",
+        "score": {
+          "home": 12,
+          "away": 12
+        }
+      },
+      {
+        "week": 10,
+        "home": "Bengals",
+        "away": "Jaguars",
+        "score": {
+          "home": 23,
+          "away": 31
+        }
+      },
+      {
+        "week": 10,
+        "home": "Seahawks",
+        "away": "Browns",
+        "score": {
+          "home": 13,
+          "away": 26
+        }
+      },
+      {
+        "week": 10,
+        "home": "Dolphins",
+        "away": "Patriots",
+        "score": {
+          "home": 16,
+          "away": 16
+        }
+      },
+      {
+        "week": 11,
+        "home": "Raiders",
+        "away": "49ers",
+        "score": {
+          "home": 23,
+          "away": 23
+        }
+      },
+      {
+        "week": 11,
+        "home": "Packers",
+        "away": "Broncos",
+        "score": {
+          "home": 12,
+          "away": 13
+        }
+      },
+      {
+        "week": 11,
+        "home": "Steelers",
+        "away": "Buccaneers",
+        "score": {
+          "home": 12,
+          "away": 20
+        }
+      },
+      {
+        "week": 11,
+        "home": "Jaguars",
+        "away": "Commanders",
+        "score": {
+          "home": 12,
+          "away": 34
+        }
+      },
+      {
+        "week": 11,
+        "home": "Eagles",
+        "away": "Giants",
+        "score": {
+          "home": 6,
+          "away": 30
+        }
+      },
+      {
+        "week": 11,
+        "home": "Patriots",
+        "away": "Vikings",
+        "score": {
+          "home": 23,
+          "away": 18
+        }
+      },
+      {
+        "week": 11,
+        "home": "Bears",
+        "away": "Panthers",
+        "score": {
+          "home": 16,
+          "away": 19
+        }
+      },
+      {
+        "week": 11,
+        "home": "Cardinals",
+        "away": "Chiefs",
+        "score": {
+          "home": 17,
+          "away": 15
+        }
+      },
+      {
+        "week": 11,
+        "home": "Texans",
+        "away": "Falcons",
+        "score": {
+          "home": 13,
+          "away": 16
+        }
+      },
+      {
+        "week": 11,
+        "home": "Bengals",
+        "away": "Bills",
+        "score": {
+          "home": 16,
+          "away": 17
+        }
+      },
+      {
+        "week": 11,
+        "home": "Chargers",
+        "away": "Jets",
+        "score": {
+          "home": 15,
+          "away": 19
+        }
+      },
+      {
+        "week": 11,
+        "home": "Ravens",
+        "away": "Titans",
+        "score": {
+          "home": 17,
+          "away": 18
+        }
+      },
+      {
+        "week": 11,
+        "home": "Lions",
+        "away": "Browns",
+        "score": {
+          "home": 26,
+          "away": 26
+        }
+      },
+      {
+        "week": 11,
+        "home": "Seahawks",
+        "away": "Dolphins",
+        "score": {
+          "home": 15,
+          "away": 34
+        }
+      },
+      {
+        "week": 11,
+        "home": "Cowboys",
+        "away": "Rams",
+        "score": {
+          "home": 20,
+          "away": 10
+        }
+      },
+      {
+        "week": 11,
+        "home": "Saints",
+        "away": "Colts",
+        "score": {
+          "home": 16,
+          "away": 16
+        }
+      },
+      {
+        "week": 12,
+        "home": "Saints",
+        "away": "Titans",
+        "score": {
+          "home": 15,
+          "away": 19
+        }
+      },
+      {
+        "week": 12,
+        "home": "Cowboys",
+        "away": "Bears",
+        "score": {
+          "home": 13,
+          "away": 19
+        }
+      },
+      {
+        "week": 12,
+        "home": "Eagles",
+        "away": "Texans",
+        "score": {
+          "home": 19,
+          "away": 19
+        }
+      },
+      {
+        "week": 12,
+        "home": "Ravens",
+        "away": "Jets",
+        "score": {
+          "home": 19,
+          "away": 13
+        }
+      },
+      {
+        "week": 12,
+        "home": "Giants",
+        "away": "Cardinals",
+        "score": {
+          "home": 12,
+          "away": 10
+        }
+      },
+      {
+        "week": 12,
+        "home": "Panthers",
+        "away": "Seahawks",
+        "score": {
+          "home": 27,
+          "away": 20
+        }
+      },
+      {
+        "week": 12,
+        "home": "Steelers",
+        "away": "Bills",
+        "score": {
+          "home": 23,
+          "away": 34
+        }
+      },
+      {
+        "week": 12,
+        "home": "49ers",
+        "away": "Bengals",
+        "score": {
+          "home": 26,
+          "away": 38
+        }
+      },
+      {
+        "week": 12,
+        "home": "Chargers",
+        "away": "Packers",
+        "score": {
+          "home": 19,
+          "away": 17
+        }
+      },
+      {
+        "week": 12,
+        "home": "Buccaneers",
+        "away": "Raiders",
+        "score": {
+          "home": 13,
+          "away": 23
+        }
+      },
+      {
+        "week": 12,
+        "home": "Dolphins",
+        "away": "Patriots",
+        "score": {
+          "home": 23,
+          "away": 19
+        }
+      },
+      {
+        "week": 12,
+        "home": "Chiefs",
+        "away": "Lions",
+        "score": {
+          "home": 23,
+          "away": 19
+        }
+      },
+      {
+        "week": 12,
+        "home": "Jaguars",
+        "away": "Browns",
+        "score": {
+          "home": 23,
+          "away": 24
+        }
+      },
+      {
+        "week": 12,
+        "home": "Vikings",
+        "away": "Falcons",
+        "score": {
+          "home": 13,
+          "away": 30
+        }
+      },
+      {
+        "week": 12,
+        "home": "Rams",
+        "away": "Colts",
+        "score": {
+          "home": 16,
+          "away": 31
+        }
+      },
+      {
+        "week": 12,
+        "home": "Broncos",
+        "away": "Commanders",
+        "score": {
+          "home": 12,
+          "away": 23
+        }
+      },
+      {
+        "week": 13,
+        "home": "Dolphins",
+        "away": "Commanders",
+        "score": {
+          "home": 19,
+          "away": 19
+        }
+      },
+      {
+        "week": 13,
+        "home": "Bengals",
+        "away": "Jaguars",
+        "score": {
+          "home": 12,
+          "away": 17
+        }
+      },
+      {
+        "week": 13,
+        "home": "Bills",
+        "away": "49ers",
+        "score": {
+          "home": 16,
+          "away": 16
+        }
+      },
+      {
+        "week": 13,
+        "home": "Falcons",
+        "away": "Seahawks",
+        "score": {
+          "home": 19,
+          "away": 19
+        }
+      },
+      {
+        "week": 13,
+        "home": "Steelers",
+        "away": "Patriots",
+        "score": {
+          "home": 22,
+          "away": 17
+        }
+      },
+      {
+        "week": 13,
+        "home": "Cardinals",
+        "away": "Ravens",
+        "score": {
+          "home": 23,
+          "away": 20
+        }
+      },
+      {
+        "week": 13,
+        "home": "Eagles",
+        "away": "Browns",
+        "score": {
+          "home": 26,
+          "away": 30
+        }
+      },
+      {
+        "week": 13,
+        "home": "Raiders",
+        "away": "Texans",
+        "score": {
+          "home": 12,
+          "away": 13
+        }
+      },
+      {
+        "week": 13,
+        "home": "Colts",
+        "away": "Buccaneers",
+        "score": {
+          "home": 19,
+          "away": 12
+        }
+      },
+      {
+        "week": 13,
+        "home": "Titans",
+        "away": "Chargers",
+        "score": {
+          "home": 30,
+          "away": 13
+        }
+      },
+      {
+        "week": 13,
+        "home": "Packers",
+        "away": "Panthers",
+        "score": {
+          "home": 26,
+          "away": 23
+        }
+      },
+      {
+        "week": 13,
+        "home": "Jets",
+        "away": "Vikings",
+        "score": {
+          "home": 26,
+          "away": 23
+        }
+      },
+      {
+        "week": 13,
+        "home": "Saints",
+        "away": "Bears",
+        "score": {
+          "home": 17,
+          "away": 34
+        }
+      },
+      {
+        "week": 13,
+        "home": "Giants",
+        "away": "Chiefs",
+        "score": {
+          "home": 19,
+          "away": 6
+        }
+      },
+      {
+        "week": 13,
+        "home": "Lions",
+        "away": "Cowboys",
+        "score": {
+          "home": 26,
+          "away": 10
+        }
+      },
+      {
+        "week": 13,
+        "home": "Rams",
+        "away": "Broncos",
+        "score": {
+          "home": 27,
+          "away": 23
+        }
+      },
+      {
+        "week": 14,
+        "home": "Vikings",
+        "away": "Saints",
+        "score": {
+          "home": 38,
+          "away": 24
+        }
+      },
+      {
+        "week": 14,
+        "home": "Texans",
+        "away": "Commanders",
+        "score": {
+          "home": 23,
+          "away": 16
+        }
+      },
+      {
+        "week": 14,
+        "home": "Chargers",
+        "away": "Bears",
+        "score": {
+          "home": 23,
+          "away": 18
+        }
+      },
+      {
+        "week": 14,
+        "home": "Patriots",
+        "away": "Browns",
+        "score": {
+          "home": 12,
+          "away": 20
+        }
+      },
+      {
+        "week": 14,
+        "home": "Colts",
+        "away": "Dolphins",
+        "score": {
+          "home": 6,
+          "away": 16
+        }
+      },
+      {
+        "week": 14,
+        "home": "Falcons",
+        "away": "Giants",
+        "score": {
+          "home": 13,
+          "away": 31
+        }
+      },
+      {
+        "week": 14,
+        "home": "Lions",
+        "away": "Titans",
+        "score": {
+          "home": 26,
+          "away": 10
+        }
+      },
+      {
+        "week": 14,
+        "home": "Eagles",
+        "away": "Cardinals",
+        "score": {
+          "home": 9,
+          "away": 16
+        }
+      },
+      {
+        "week": 14,
+        "home": "Bills",
+        "away": "Buccaneers",
+        "score": {
+          "home": 34,
+          "away": 27
+        }
+      },
+      {
+        "week": 14,
+        "home": "Jaguars",
+        "away": "Rams",
+        "score": {
+          "home": 23,
+          "away": 16
+        }
+      },
+      {
+        "week": 14,
+        "home": "Jets",
+        "away": "Panthers",
+        "score": {
+          "home": 20,
+          "away": 34
+        }
+      },
+      {
+        "week": 14,
+        "home": "Broncos",
+        "away": "49ers",
+        "score": {
+          "home": 10,
+          "away": 23
+        }
+      },
+      {
+        "week": 14,
+        "home": "Cowboys",
+        "away": "Ravens",
+        "score": {
+          "home": 23,
+          "away": 26
+        }
+      },
+      {
+        "week": 14,
+        "home": "Seahawks",
+        "away": "Steelers",
+        "score": {
+          "home": 23,
+          "away": 20
+        }
+      },
+      {
+        "week": 14,
+        "home": "Chiefs",
+        "away": "Packers",
+        "score": {
+          "home": 19,
+          "away": 34
+        }
+      },
+      {
+        "week": 14,
+        "home": "Bengals",
+        "away": "Raiders",
+        "score": {
+          "home": 19,
+          "away": 13
+        }
+      },
+      {
+        "week": 15,
+        "home": "Bears",
+        "away": "Bills",
+        "score": {
+          "home": 26,
+          "away": 13
+        }
+      },
+      {
+        "week": 15,
+        "home": "Bengals",
+        "away": "Ravens",
+        "score": {
+          "home": 7,
+          "away": 7
+        }
+      },
+      {
+        "week": 15,
+        "home": "Texans",
+        "away": "Falcons",
+        "score": {
+          "home": 20,
+          "away": 9
+        }
+      },
+      {
+        "week": 15,
+        "home": "Chargers",
+        "away": "Eagles",
+        "score": {
+          "home": 9,
+          "away": 20
+        }
+      },
+      {
+        "week": 15,
+        "home": "Titans",
+        "away": "49ers",
+        "score": {
+          "home": 23,
+          "away": 19
+        }
+      },
+      {
+        "week": 15,
+        "home": "Vikings",
+        "away": "Jets",
+        "score": {
+          "home": 15,
+          "away": 34
+        }
+      },
+      {
+        "week": 15,
+        "home": "Dolphins",
+        "away": "Rams",
+        "score": {
+          "home": 34,
+          "away": 23
+        }
+      },
+      {
+        "week": 15,
+        "home": "Browns",
+        "away": "Giants",
+        "score": {
+          "home": 20,
+          "away": 24
+        }
+      },
+      {
+        "week": 15,
+        "home": "Raiders",
+        "away": "Seahawks",
+        "score": {
+          "home": 30,
+          "away": 30
+        }
+      },
+      {
+        "week": 15,
+        "home": "Steelers",
+        "away": "Lions",
+        "score": {
+          "home": 13,
+          "away": 16
+        }
+      },
+      {
+        "week": 15,
+        "home": "Chiefs",
+        "away": "Commanders",
+        "score": {
+          "home": 26,
+          "away": 27
+        }
+      },
+      {
+        "week": 15,
+        "home": "Packers",
+        "away": "Saints",
+        "score": {
+          "home": 30,
+          "away": 13
+        }
+      },
+      {
+        "week": 15,
+        "home": "Panthers",
+        "away": "Patriots",
+        "score": {
+          "home": 30,
+          "away": 23
+        }
+      },
+      {
+        "week": 15,
+        "home": "Colts",
+        "away": "Cardinals",
+        "score": {
+          "home": 15,
+          "away": 16
+        }
+      },
+      {
+        "week": 15,
+        "home": "Cowboys",
+        "away": "Jaguars",
+        "score": {
+          "home": 26,
+          "away": 22
+        }
+      },
+      {
+        "week": 15,
+        "home": "Broncos",
+        "away": "Buccaneers",
+        "score": {
+          "home": 24,
+          "away": 9
+        }
+      },
+      {
+        "week": 16,
+        "home": "Saints",
+        "away": "Bears",
+        "score": {
+          "home": 20,
+          "away": 26
+        }
+      },
+      {
+        "week": 16,
+        "home": "Giants",
+        "away": "Bills",
+        "score": {
+          "home": 12,
+          "away": 20
+        }
+      },
+      {
+        "week": 16,
+        "home": "Eagles",
+        "away": "Browns",
+        "score": {
+          "home": 19,
+          "away": 9
+        }
+      },
+      {
+        "week": 16,
+        "home": "Falcons",
+        "away": "Vikings",
+        "score": {
+          "home": 13,
+          "away": 13
+        }
+      },
+      {
+        "week": 16,
+        "home": "Cardinals",
+        "away": "Jaguars",
+        "score": {
+          "home": 15,
+          "away": 22
+        }
+      },
+      {
+        "week": 16,
+        "home": "49ers",
+        "away": "Dolphins",
+        "score": {
+          "home": 13,
+          "away": 23
+        }
+      },
+      {
+        "week": 16,
+        "home": "Patriots",
+        "away": "Titans",
+        "score": {
+          "home": 16,
+          "away": 23
+        }
+      },
+      {
+        "week": 16,
+        "home": "Raiders",
+        "away": "Broncos",
+        "score": {
+          "home": 26,
+          "away": 26
+        }
+      },
+      {
+        "week": 16,
+        "home": "Chargers",
+        "away": "Cowboys",
+        "score": {
+          "home": 12,
+          "away": 12
+        }
+      },
+      {
+        "week": 16,
+        "home": "Seahawks",
+        "away": "Commanders",
+        "score": {
+          "home": 13,
+          "away": 17
+        }
+      },
+      {
+        "week": 16,
+        "home": "Bengals",
+        "away": "Jets",
+        "score": {
+          "home": 23,
+          "away": 19
+        }
+      },
+      {
+        "week": 16,
+        "home": "Texans",
+        "away": "Steelers",
+        "score": {
+          "home": 19,
+          "away": 27
+        }
+      },
+      {
+        "week": 16,
+        "home": "Lions",
+        "away": "Buccaneers",
+        "score": {
+          "home": 27,
+          "away": 20
+        }
+      },
+      {
+        "week": 16,
+        "home": "Colts",
+        "away": "Packers",
+        "score": {
+          "home": 27,
+          "away": 19
+        }
+      },
+      {
+        "week": 16,
+        "home": "Panthers",
+        "away": "Rams",
+        "score": {
+          "home": 20,
+          "away": 19
+        }
+      },
+      {
+        "week": 16,
+        "home": "Chiefs",
+        "away": "Ravens",
+        "score": {
+          "home": 27,
+          "away": 12
+        }
+      },
+      {
+        "week": 17,
+        "home": "Lions",
+        "away": "Eagles",
+        "score": {
+          "home": 20,
+          "away": 17
+        }
+      },
+      {
+        "week": 17,
+        "home": "Steelers",
+        "away": "Cowboys",
+        "score": {
+          "home": 17,
+          "away": 20
+        }
+      },
+      {
+        "week": 17,
+        "home": "Texans",
+        "away": "Seahawks",
+        "score": {
+          "home": 20,
+          "away": 16
+        }
+      },
+      {
+        "week": 17,
+        "home": "Rams",
+        "away": "Saints",
+        "score": {
+          "home": 26,
+          "away": 20
+        }
+      },
+      {
+        "week": 17,
+        "home": "Jets",
+        "away": "Raiders",
+        "score": {
+          "home": 30,
+          "away": 6
+        }
+      },
+      {
+        "week": 17,
+        "home": "Cardinals",
+        "away": "Commanders",
+        "score": {
+          "home": 23,
+          "away": 23
+        }
+      },
+      {
+        "week": 17,
+        "home": "49ers",
+        "away": "Packers",
+        "score": {
+          "home": 16,
+          "away": 23
+        }
+      },
+      {
+        "week": 17,
+        "home": "Falcons",
+        "away": "Colts",
+        "score": {
+          "home": 12,
+          "away": 19
+        }
+      },
+      {
+        "week": 17,
+        "home": "Bengals",
+        "away": "Dolphins",
+        "score": {
+          "home": 9,
+          "away": 16
+        }
+      },
+      {
+        "week": 17,
+        "home": "Jaguars",
+        "away": "Chargers",
+        "score": {
+          "home": 19,
+          "away": 30
+        }
+      },
+      {
+        "week": 17,
+        "home": "Bills",
+        "away": "Panthers",
+        "score": {
+          "home": 9,
+          "away": 15
+        }
+      },
+      {
+        "week": 17,
+        "home": "Broncos",
+        "away": "Ravens",
+        "score": {
+          "home": 34,
+          "away": 12
+        }
+      },
+      {
+        "week": 17,
+        "home": "Browns",
+        "away": "Patriots",
+        "score": {
+          "home": 20,
+          "away": 10
+        }
+      },
+      {
+        "week": 17,
+        "home": "Bears",
+        "away": "Chiefs",
+        "score": {
+          "home": 26,
+          "away": 12
+        }
+      },
+      {
+        "week": 17,
+        "home": "Titans",
+        "away": "Giants",
+        "score": {
+          "home": 24,
+          "away": 23
+        }
+      },
+      {
+        "week": 17,
+        "home": "Buccaneers",
+        "away": "Vikings",
+        "score": {
+          "home": 12,
+          "away": 24
+        }
+      }
+    ]
+  }
 }

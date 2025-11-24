@@ -17,15 +17,43 @@ from typing import List, Dict, Any, Optional
 import uuid
 import json
 import datetime
+import os
+import time
+import itertools
+import re
 
-SEED = 42
+# Base seed: default None -> time-based for variability. Set SIM_SEED to pin runs.
+SEED = None
 
 # ---------------------------
 # Utilities
 # ---------------------------
 def seeded_rand(seed_offset=0):
-    # Return a Random instance seeded deterministically for reproducibility
-    return random.Random(SEED + seed_offset)
+    """
+    Return a Random instance. If SIM_SEED env var is set, use it for reproducibility.
+    Otherwise, use a time-based seed so runs vary even with the same starting player.
+    """
+    base_seed = SEED
+    env_seed = os.environ.get("SIM_SEED")
+    if env_seed is not None:
+        try:
+            base_seed = int(env_seed)
+        except ValueError:
+            base_seed = None
+    if base_seed is None:
+        base_seed = int(time.time_ns() % 1_000_000_000)
+    return random.Random(base_seed + seed_offset)
+
+def team_rating(team:"Team")->float:
+    """Simple overall derived from key attributes across roster."""
+    if not team.roster:
+        return 50.0
+    vals=[]
+    for p in team.roster:
+        vals.append(p.attributes.get("awareness",50))
+        vals.append(p.attributes.get("speed",50))
+        vals.append(p.attributes.get("strength",50))
+    return statistics.mean(vals)
 
 # ---------------------------
 # Data Models
@@ -62,6 +90,363 @@ class Team:
     season_stats: Dict[str,Any] = field(default_factory=lambda: {"wins":0,"losses":0,"points_for":0,"points_against":0})
     finances: Dict[str,float] = field(default_factory=lambda: {"cap":100.0})
 
+@dataclass
+class FbsSchool:
+    id: str
+    name: str
+    prestige: float  # 0-1, used for offer weighting
+    scheme_bias: Dict[str,float]
+    location: str
+
+@dataclass
+class NflFranchise:
+    id: str
+    name: str
+    city: str
+    prestige: float  # 0-1
+
+@dataclass
+class CareerState:
+    player: Player
+    stage: str  # "HS","COLLEGE","NFL"
+    calendar: Dict[str,int]
+    star_rating: float
+    hs_stats: List[Dict[str,Any]] = field(default_factory=list)
+    college_stats: List[Dict[str,Any]] = field(default_factory=list)
+    college_offers: List[Dict[str,Any]] = field(default_factory=list)
+    college_team: Optional[FbsSchool] = None
+    draft_projection: Optional[str] = None
+    nfl_team: Optional[str] = None
+    awards: List[Dict[str,Any]] = field(default_factory=list)
+    retired: bool = False
+    retired_year: Optional[int] = None
+    history: List[str] = field(default_factory=list)
+
+# ---------------------------
+# Career Mode Engine (HS -> College -> NFL)
+# ---------------------------
+def build_fbs_catalog()->List[FbsSchool]:
+    # Full FBS list (133 teams) with rough prestige tiers derived from ordering
+    fbs_names = [
+        "Air Force","Akron","Alabama","Appalachian State","Arizona","Arizona State","Arkansas",
+        "Arkansas State","Army","Auburn","Ball State","Baylor","Boise State","Boston College",
+        "Bowling Green","Buffalo","BYU","California","Central Michigan","Charlotte","Cincinnati",
+        "Clemson","Coastal Carolina","Colorado","Colorado State","Duke","East Carolina","Eastern Michigan",
+        "Florida","Florida Atlantic","Florida International","Florida State","Fresno State","Georgia",
+        "Georgia Southern","Georgia State","Georgia Tech","Hawaii","Houston","Illinois","Indiana",
+        "Iowa","Iowa State","James Madison","Kansas","Kansas State","Kent State","Kentucky",
+        "Liberty","Louisiana","Louisiana Tech","Louisville","LSU","Marshall","Maryland","Memphis",
+        "Miami (FL)","Miami (OH)","Michigan","Michigan State","Middle Tennessee","Minnesota",
+        "Mississippi State","Missouri","Navy","NC State","Nebraska","Nevada","New Mexico",
+        "New Mexico State","North Carolina","North Texas","Northern Illinois","Northwestern",
+        "Notre Dame","Ohio","Ohio State","Oklahoma","Oklahoma State","Old Dominion","Ole Miss",
+        "Oregon","Oregon State","Penn State","Pittsburgh","Purdue","Rice","Rutgers","San Diego State",
+        "San Jose State","SMU","South Alabama","South Carolina","South Florida","Southern Miss",
+        "Stanford","Syracuse","TCU","Temple","Tennessee","Texas","Texas A&M","Texas State",
+        "Texas Tech","Toledo","Troy","Tulane","Tulsa","UAB","UCF","UCLA","UConn","UMass",
+        "UNLV","USC","Utah","Utah State","UTEP","UTSA","Vanderbilt","Virginia","Virginia Tech",
+        "Wake Forest","Washington","Washington State","West Virginia","Western Kentucky",
+        "Western Michigan","Wisconsin","Wyoming","App State","Sam Houston","Jacksonville State",
+        "Kennesaw State","James Madison (FBS)","Coastal Carolina (FBS)"
+    ]
+    # de-dup and ensure length
+    seen = set()
+    unique_names = []
+    for n in fbs_names:
+        if n.lower() in seen:
+            continue
+        seen.add(n.lower())
+        unique_names.append(n)
+    total = len(unique_names)
+    catalog = []
+    for idx, name in enumerate(unique_names):
+        prestige = max(0.35, 0.95 - (idx/(total*1.1)))
+        scheme = {"pass":0.45 + ((idx%5)*0.05), "run":0.55 - ((idx%5)*0.05)}
+        slug = re.sub(r'[^A-Za-z ]','', name).strip()
+        words = slug.split()
+        if not words:
+            abbr = f"FBS{idx:03d}"
+        else:
+            abbr = "".join(w[0] for w in words).upper()[:4]
+            if len(abbr)<2:
+                abbr = (words[0][:4]).upper()
+        catalog.append(FbsSchool(id=abbr, name=name, location=name, prestige=prestige, scheme_bias=scheme))
+    return catalog
+
+class CareerEngine:
+    def __init__(self, rng: random.Random):
+        self.rng = rng
+        self.fbs_catalog = build_fbs_catalog()
+
+    def _base_attr_for_stars(self, stars:float)->float:
+        # Map 0-5 stars to an overall-ish target (zengm-style normalization)
+        return 42 + stars*9 + self.rng.uniform(-2,2)
+
+    def create_prospect(self, first:str, last:str, pos:str="QB", stars:int=3)->CareerState:
+        base = self._base_attr_for_stars(stars)
+        potential = min(1.0, max(0.1, 0.35 + stars*0.12 + self.rng.uniform(-0.05,0.08)))
+        attrs = {
+            "speed": base + self.rng.randint(-5,6),
+            "strength": base + self.rng.randint(-5,6),
+            "awareness": base + self.rng.randint(-4,8),
+            "throw_power": base + self.rng.randint(-2,10) if pos=="QB" else base + self.rng.randint(-6,4),
+            "catching": base + self.rng.randint(-6,6),
+            "route_running": base + self.rng.randint(-6,6),
+            "break_tackle": base + self.rng.randint(-6,6)
+        }
+        p = Player(
+            id=str(uuid.uuid4()),
+            name=f"{first} {last}",
+            position=pos,
+            age=17,
+            attributes=attrs,
+            hidden_potential=potential,
+            personality={"work_ethic": self.rng.random(), "composure": self.rng.random()}
+        )
+        return CareerState(
+            player=p,
+            stage="HS",
+            calendar={"phase":"HS", "year":1, "week":1},
+            star_rating=float(stars),
+            history=[f"Created {stars}-star {pos} prospect {p.name} (pot {potential:.2f})"]
+        )
+
+    def simulate_high_school_year(self, state:CareerState, year:int)->Dict[str,Any]:
+        p = state.player
+        volatility = max(0.15, (6 - state.star_rating)/6)  # more volatility for low stars
+        overall_before = round(self._overall(p),1)
+        touches = 80 + int(self.rng.random()*40)
+        per_touch = (p.attributes.get("speed",50)+p.attributes.get("awareness",50))/18
+        swing = self.rng.uniform(0.55 - volatility*0.25, 1.2 + volatility*0.45)
+        production = max(250, int(per_touch*touches*swing))
+        tds = int(max(2, production/120 * self.rng.uniform(0.8,1.2)))
+        awards = []
+        if production > 1400 and self.rng.random()<0.5:
+            awards.append("All-State")
+        if production > 1800 and self.rng.random()<0.35:
+            awards.append("HS National POY")
+        hs_line = {"year": year, "production_yards": production, "tds": tds, "awards": awards, "overall_before": overall_before}
+        state.hs_stats.append(hs_line)
+        state.history.append(f"HS year {year}: {production} yds, {tds} TDs (Ovr {overall_before})")
+        for a in awards:
+            state.awards.append({"level":"HS","year":year,"name":a})
+            state.history.append(f"HS award: {a}")
+
+        # Rating movement from performance and hidden potential
+        perf_delta = (production/1000 - 1) * (0.4 + volatility*0.3)
+        potential_delta = (p.hidden_potential-0.5)*0.6
+        state.star_rating = max(1.0, min(5.0, state.star_rating + perf_delta + potential_delta + self.rng.uniform(-0.25*volatility,0.3)))
+        growth = 1 + p.hidden_potential*2.5 + volatility*0.8
+        for k in ["speed","awareness","throw_power","route_running","break_tackle","strength"]:
+            p.attributes[k] += self.rng.uniform(0.4, growth)
+        # Adjust hidden potential slightly based on production to mimic scouting updates
+        pot_delta = (production/1200.0 - 1) * (0.05 + volatility*0.05) + self.rng.uniform(-0.03*volatility,0.03*volatility)
+        p.hidden_potential = max(0.1, min(1.0, p.hidden_potential + pot_delta))
+        p.age += 1
+        state.calendar = {"phase":"HS", "year":year, "week":15}
+        # record post progression
+        hs_line["overall_after"] = round(self._overall(p),1)
+        state.history.append(f"HS year {year} progression: {overall_before} -> {hs_line['overall_after']}")
+        return hs_line
+
+    def _offer_count_for_rating(self, stars:float)->int:
+        # Bigger separation: 1-star (1-5), 2-star (3-10), 3-star (8-20), 4-star (15-35), 5-star (40-70)
+        if stars <= 1.5:
+            base, spread = 1, 4
+        elif stars <= 2.5:
+            base, spread = 3, 7
+        elif stars <= 3.5:
+            base, spread = 8, 12
+        elif stars <= 4.5:
+            base, spread = 15, 20
+        else:
+            base, spread = 80, 50
+        return max(1, base + self.rng.randint(0, spread))
+
+    def generate_college_offers(self, state:CareerState)->List[Dict[str,Any]]:
+        if state.stage != "HS":
+            return state.college_offers
+        # factor in latest HS production for interest level
+        recent = state.hs_stats[-1] if state.hs_stats else {"production_yards": 0, "tds": 0}
+        perf_score = (recent.get("production_yards",0)/1200.0) + (recent.get("tds",0)/12.0)
+        perf_score = max(0.2, min(2.5, perf_score))
+        offers = []
+        num = self._offer_count_for_rating(state.star_rating)
+        weights = []
+        for s in self.fbs_catalog:
+            # high prestige schools prefer high stars; HS stats give a bump; inject randomness to mimic scouting variance
+            desirability = s.prestige * (0.35 + state.star_rating/6) * (0.65 + 0.35*perf_score)
+            desirability *= (0.75 + self.rng.random()*0.6)
+            if state.star_rating < 3:
+                desirability *= (1.25 - s.prestige*0.55)
+            if state.star_rating >= 4.5:
+                desirability *= 1.35
+            weights.append(max(0.01, desirability))
+        k = min(max(3, num + self.rng.randint(0,6)), len(self.fbs_catalog))
+        choices = self.rng.choices(self.fbs_catalog, weights=weights, k=k)
+        seen = set()
+        for c in choices:
+            if c.id in seen:
+                continue
+            seen.add(c.id)
+            offers.append({"id": c.id, "team_name": c.name, "prestige": c.prestige, "location": c.location, "random_grade": round(self.rng.uniform(0.5,1.0),2)})
+        state.college_offers = offers
+        state.history.append(f"Generated {len(offers)} college offers (max prestige {max([o['prestige'] for o in offers]) if offers else 0:.2f}).")
+        return offers
+
+    def commit_to_college(self, state:CareerState, team_id:str):
+        team = next((o for o in state.college_offers if o["id"]==team_id), None)
+        if not team:
+            raise ValueError("Offer not found")
+        state.college_team = next((s for s in self.fbs_catalog if s.id==team_id), None)
+        state.stage = "COLLEGE"
+        state.calendar = {"phase":"COLLEGE", "year":1, "week":1}
+        state.history.append(f"Committed to {team['team_name']}.")
+
+    def simulate_college_year(self, state:CareerState, year:int)->Dict[str,Any]:
+        if state.stage not in ("COLLEGE","NFL"):
+            # auto-commit to best offer if not already
+            if not state.college_offers:
+                self.generate_college_offers(state)
+            if state.college_offers and not state.college_team:
+                best = max(state.college_offers, key=lambda o: o["prestige"])
+                self.commit_to_college(state, best["id"])
+        if state.stage == "NFL":
+            return {}
+        p = state.player
+        scheme = state.college_team.scheme_bias if state.college_team else {"pass":0.5,"run":0.5}
+        volatility = max(0.1, (6 - state.star_rating)/8)
+        usage = 95 + int(self.rng.random()*55 * (1 + volatility*0.4))
+        efficiency = (p.attributes.get("awareness",50)+p.attributes.get("speed",50))/16
+        production = int(max(400, efficiency*usage*self.rng.uniform(0.65 - 0.15*volatility,1.15 + 0.2*volatility)))
+        tds = int(max(3, production/140 * self.rng.uniform(0.85,1.25)))
+        rating_before = self._overall(p)
+        college_line = {"year":year, "rating":round(rating_before,1), "production_yards":production, "tds":tds}
+        state.college_stats.append(college_line)
+        state.history.append(f"College year {year}: rating {rating_before:.1f}, {production} yds, {tds} TDs")
+        # possible awards
+        if production > 1600 and self.rng.random()<0.35:
+            state.awards.append({"level":"College","year":year,"name":"All-American"})
+            state.history.append(f"College award: All-American (Y{year})")
+        if production > 2000 and tds > 12 and self.rng.random()<0.2:
+            state.awards.append({"level":"College","year":year,"name":"Heisman"})
+            state.history.append(f"College award: Heisman (Y{year})")
+        if production > 2200 and tds > 18 and self.rng.random()<0.15:
+            state.awards.append({"level":"College","year":year,"name":"Maxwell"})
+            state.history.append(f"College award: Maxwell (Y{year})")
+
+        # development
+        dev = 1.5 + p.hidden_potential*3 + volatility*0.9
+        for k in ["speed","awareness","throw_power","route_running","break_tackle","strength"]:
+            p.attributes[k] += self.rng.uniform(0.6, dev)
+        # potential and overall nudged by performance
+        pot_delta = (production/1400.0 - 1) * (0.06 + 0.03*volatility) + self.rng.uniform(-0.03*volatility,0.03*volatility)
+        p.hidden_potential = max(0.1, min(1.0, p.hidden_potential + pot_delta))
+        p.age += 1
+        state.star_rating = min(5.0, state.star_rating + self.rng.uniform(0.0,0.2))
+        state.calendar = {"phase":"COLLEGE", "year":year, "week":14}
+        # record post progression
+        college_line["rating_after"] = round(self._overall(p),1)
+        state.history.append(f"College year {year} progression: {rating_before:.1f} -> {college_line['rating_after']:.1f}")
+
+        # early draft declaration for high performers
+        if rating_before > 84 and year >= 2 and self.rng.random() < 0.4:
+            self.promote_to_nfl(state)
+        elif year >= 3:
+            self.promote_to_nfl(state)
+        return college_line
+
+    def _overall(self, player:Player)->float:
+        keys = ["speed","strength","awareness","throw_power","route_running","break_tackle"]
+        return statistics.mean([player.attributes.get(k,50) for k in keys])
+
+    def promote_to_nfl(self, state:CareerState):
+        rating = self._overall(state.player)
+        draft_tier = "UDFA"
+        if rating > 88:
+            draft_tier = "Round 1"
+        elif rating > 84:
+            draft_tier = "Rounds 2-3"
+        elif rating > 80:
+            draft_tier = "Rounds 4-5"
+        elif rating > 76:
+            draft_tier = "Rounds 6-7"
+        state.draft_projection = draft_tier
+        possible = [f.city for f in build_nfl_franchises()]
+        state.nfl_team = self.rng.choice(possible)
+        state.stage = "NFL"
+        state.calendar = {"phase":"NFL", "year": state.calendar.get("year",4)+1, "week":1}
+        state.history.append(f"Draft outcome: {draft_tier}, landed with {state.nfl_team}.")
+
+    def simulate_nfl_seasons(self, state:CareerState, seasons:int=3)->List[Dict[str,Any]]:
+        """Lightweight NFL stat generator driven by player overall."""
+        stats=[]
+        base_rating = self._overall(state.player)
+        declines = 0
+        for yr in range(1, seasons+1):
+            dev = 0.4 + state.player.hidden_potential*0.8
+            base_rating += self.rng.uniform(-0.8, dev)
+            usage = 450 + int(self.rng.random()*120)
+            efficiency = 6.0 + (base_rating-70)/12 + self.rng.uniform(-0.6,0.8)
+            pass_yards = max(1800, int(usage*efficiency))
+            pass_tds = max(8, int(pass_yards/180 + self.rng.randint(-2,5)))
+            ints = max(3, int(pass_tds/2.5 * (1.1 - state.player.attributes.get("awareness",50)/120)) + self.rng.randint(-2,3))
+            rush_yards = max(50, int((state.player.attributes.get("speed",50)-40) * self.rng.uniform(4,10)))
+            prev = stats[-1] if stats else None
+            if prev and pass_yards < prev["pass_yards"] and pass_tds < prev["pass_tds"] and base_rating < prev["overall"]:
+                declines += 1
+            else:
+                declines = 0
+            statline = {
+                "year": yr,
+                "overall": round(base_rating,1),
+                "pass_yards": pass_yards,
+                "pass_tds": pass_tds,
+                "ints": ints,
+                "rush_yards": rush_yards
+            }
+            stats.append(statline)
+            state.history.append(f"NFL year {yr}: Ovr {statline['overall']}, {pass_yards} pass yds, {pass_tds} TD, {ints} INT")
+            if pass_yards > 4500 and pass_tds >= 25 and self.rng.random()<0.4:
+                state.awards.append({"level":"NFL","year":yr,"name":"MVP"})
+                state.history.append(f"NFL award: MVP (Y{yr})")
+            if pass_yards > 3500 and self.rng.random()<0.5:
+                state.awards.append({"level":"NFL","year":yr,"name":"Pro Bowl"})
+                state.history.append(f"NFL award: Pro Bowl (Y{yr})")
+            if (pass_yards > 4800 and pass_tds > 30 and self.rng.random()<0.25) or ((any(a for a in state.awards if a["level"]=="NFL" and a["year"]==yr and a["name"]=="MVP")) and self.rng.random()<0.5):
+                state.awards.append({"level":"NFL","year":yr,"name":"All-Pro"})
+                state.history.append(f"NFL award: All-Pro (Y{yr})")
+            if pass_yards > 4000 and pass_tds > 20 and self.rng.random()<0.2:
+                state.awards.append({"level":"NFL","year":yr,"name":"Super Bowl"})
+                state.history.append(f"NFL award: Super Bowl Champion (Y{yr})")
+            if yr >= 12 and declines >= 2 and self.rng.random() < 0.6:
+                state.retired = True
+                state.retired_year = yr
+                state.history.append(f"Retired after year {yr} due to decline.")
+                break
+        return stats
+
+# ---------------------------
+# NFL Helpers
+# ---------------------------
+def build_nfl_franchises()->List[NflFranchise]:
+    names = [
+        ("BUF","Bills","Buffalo"),("MIA","Dolphins","Miami"),("NE","Patriots","New England"),("NYJ","Jets","New York"),
+        ("BAL","Ravens","Baltimore"),("CIN","Bengals","Cincinnati"),("CLE","Browns","Cleveland"),("PIT","Steelers","Pittsburgh"),
+        ("HOU","Texans","Houston"),("IND","Colts","Indianapolis"),("JAX","Jaguars","Jacksonville"),("TEN","Titans","Tennessee"),
+        ("DEN","Broncos","Denver"),("KC","Chiefs","Kansas City"),("LV","Raiders","Las Vegas"),("LAC","Chargers","Los Angeles"),
+        ("DAL","Cowboys","Dallas"),("NYG","Giants","New York"),("PHI","Eagles","Philadelphia"),("WAS","Commanders","Washington"),
+        ("CHI","Bears","Chicago"),("DET","Lions","Detroit"),("GB","Packers","Green Bay"),("MIN","Vikings","Minnesota"),
+        ("ATL","Falcons","Atlanta"),("CAR","Panthers","Carolina"),("NO","Saints","New Orleans"),("TB","Buccaneers","Tampa Bay"),
+        ("ARI","Cardinals","Arizona"),("LA","Rams","Los Angeles"),("SF","49ers","San Francisco"),("SEA","Seahawks","Seattle")
+    ]
+    franchises=[]
+    for idx,(abbr,name,city) in enumerate(names):
+        prestige = max(0.4, 0.85 - idx*0.01)
+        franchises.append(NflFranchise(id=abbr, name=name, city=city, prestige=prestige))
+    return franchises
+
+
 # ---------------------------
 # Raw Event / Provenance Log
 # ---------------------------
@@ -87,6 +472,9 @@ class PlayResolver:
     def __init__(self, rng: random.Random):
         self.rng = rng
 
+    def _mean(self, values, default=50):
+        return statistics.mean(values) if values else default
+
     def resolve_play(self, play_call:Dict[str,Any], offense:Team, defense:Team)->Dict[str,Any]:
         """
         Simplified micro-resolution:
@@ -109,6 +497,9 @@ class PlayResolver:
         off_effect = (off_player.attributes.get("awareness",50)/50.0) * (1 - off_player.fatigue)
         team_coach = offense.coach_quality
         def_effect = (defense.coach_quality if hasattr(defense,'coach_quality') else 0.5)
+        off_rating = team_rating(offense)
+        def_rating = team_rating(defense)
+        rating_diff = (off_rating - def_rating) / 50.0
 
         if play_type == "pass":
             # compute completion chance
@@ -121,14 +512,14 @@ class PlayResolver:
 
             qb_acc = qb.attributes.get("awareness",50) * 0.6 + qb.attributes.get("throw_power",50) * 0.4
             target_skill = target.attributes.get("route_running",50)*0.6 + target.attributes.get("catching",50)*0.4
-            coverage = statistics.mean([p.attributes.get("awareness",50) for p in defense.roster if p.position in ("DB","LB")]) if defense.roster else 50
+            coverage = self._mean([p.attributes.get("awareness",50) for p in defense.roster if p.position in ("DB","LB")], default=50)
             # pressure factor from pass rush (DL)
-            rush = statistics.mean([p.attributes.get("strength",50) for p in defense.roster if p.position in ("DL",)])
+            rush = self._mean([p.attributes.get("strength",50) for p in defense.roster if p.position in ("DL",)], default=50)
             pressure_prob = self._logistic((rush - qb.attributes.get("awareness",50))/20.0)
             pressure = self.rng.random() < pressure_prob
 
             # base prob
-            prob = 0.35 + (qb_acc-50)/200 + (target_skill-50)/300 - (coverage-50)/200
+            prob = 0.40 + (qb_acc-50)/220 + (target_skill-50)/320 - (coverage-50)/210 + rating_diff*0.1
             if pressure:
                 prob -= 0.10
             # clamp
@@ -136,20 +527,23 @@ class PlayResolver:
             complete = self.rng.random() < prob
 
             # yards model
-            depth = play_call.get("depth", 6 + int((target.attributes.get("speed",50)-50)/5)) # simple depth heuristic
+            depth = play_call.get("depth", 8 + int((target.attributes.get("speed",50)-50)/6)) # simple depth heuristic
             yac = 0
             if complete:
-                yac = max(0, int((target.attributes.get("break_tackle",50)/50.0) * (self.rng.random()*6)))
+                yac = max(0, int((target.attributes.get("break_tackle",50)/55.0) * (self.rng.random()*8)))
                 # yard gain is depth +/- variation + yac
-                yard_variation = int((target_skill-50)/10) + self.rng.randint(-3,6)
+                yard_variation = int((target_skill-50)/10) + self.rng.randint(-2,14)
                 yards = max(0, depth + yard_variation + yac)
-                td = yards >= 40 and self.rng.random() < 0.05 + (target.attributes.get("speed",50)-50)/200.0
+                td = yards >= 35 and self.rng.random() < 0.06 + (target.attributes.get("speed",50)-50)/220.0
                 interception = False
             else:
                 yards = 0
                 td = False
                 # chance interception on badly thrown passes
-                interception = (self.rng.random() < 0.03) or (self.rng.random() < 0.01 and prob < 0.1)
+                int_volatility = 0.02 + (coverage-50)/400 + self.rng.uniform(0,0.07)
+                qb_awareness = qb.attributes.get("awareness",50)
+                int_volatility += max(0, (55 - qb_awareness)/200)
+                interception = (self.rng.random() < int_volatility) or (self.rng.random() < 0.03 and prob < 0.15)
 
             # injuries chance from collisions on receptions or tackles
             injury = None
@@ -162,11 +556,11 @@ class PlayResolver:
         elif play_type == "run":
             runner = off_player
             run_skill = runner.attributes.get("break_tackle",50)*0.6 + runner.attributes.get("speed",50)*0.4
-            line_strength = statistics.mean([p.attributes.get("strength",50) for p in offense.roster if p.position in ("OL",)]) if offense.roster else 50
-            def_front = statistics.mean([p.attributes.get("strength",50) for p in defense.roster if p.position in ("DL","LB")]) if defense.roster else 50
-            base = max(0, int((run_skill - def_front)/10) + int(line_strength/50) + self.rng.randint(-2,8))
-            yards = max(0, base + self.rng.randint(-3,8))
-            td = yards >= 60 and self.rng.random() < 0.03
+            line_strength = self._mean([p.attributes.get("strength",50) for p in offense.roster if p.position in ("OL",)], default=50)
+            def_front = self._mean([p.attributes.get("strength",50) for p in defense.roster if p.position in ("DL","LB")], default=50)
+            base = max(0, int((run_skill - def_front)/10) + int(line_strength/50) + self.rng.randint(-1,10) + int(rating_diff*5))
+            yards = max(0, base + self.rng.randint(0,10))
+            td = yards >= 60 and self.rng.random() < 0.08 + max(0, rating_diff*0.07)
             broken_tackles = int((runner.attributes.get("break_tackle",50)-40)/15) if yards>3 else 0
             injury = None
             if self.rng.random() < 0.004:
@@ -201,16 +595,25 @@ class GameSimulator:
         Simplified: 4 quarters, each team gets set number of drives (~8), drives produce points
         """
         game_id = str(uuid.uuid4())
-        game_record = {"game_id":game_id, "home":home.id, "away":away.id, "plays":[], "score":{"home":0,"away":0}}
+        game_record = {
+            "game_id":game_id,
+            "home_id":home.id,
+            "home_name":home.name,
+            "away_id":away.id,
+            "away_name":away.name,
+            "plays":[],
+            "score":{"home":0,"away":0}
+        }
         # seed-specific rng for this game determinism
         for quarter in range(1,5):
-            drives_per_quarter = 2
+            drives_per_quarter = 3
             for d in range(drives_per_quarter):
                 # choose offense
                 offense = home if ((d + quarter) % 2 == 0) else away
                 defense = away if offense is home else home
+                rating_diff = (team_rating(offense) - team_rating(defense)) / 50.0
                 # simple drive: choose a sequence of plays
-                plays_in_drive = self.rng.randint(3,8)
+                plays_in_drive = self.rng.randint(4,10)
                 drive_yards = 0
                 drive_score = 0
                 for pnum in range(plays_in_drive):
@@ -244,18 +647,24 @@ class GameSimulator:
                         if outcome.get("complete"):
                             drive_yards += int(outcome.get("yards",0))
                         if outcome.get("td"):
-                            # 6 points
-                            drive_score += 6
+                            # touchdown worth 7
+                            drive_score += 7
                     else:
                         drive_yards += int(outcome.get("yards",0))
                         if outcome.get("td"):
-                            drive_score += 6
+                            drive_score += 7
                     # injury apply
                     if outcome.get("injury"):
                         primary.injuries.append({"injury":outcome.get("injury"), "when":datetime.datetime.utcnow().isoformat()})
                         primary.career_events.append({"type":"injury","injury":outcome.get("injury"), "game_id":game_id})
                 # end drive - possible field goal or touchdown
                 # simple scoring chance
+                # redzone conversion if enough yards accumulated but no td/fg yet
+                if drive_score==0 and drive_yards >= 65 and self.rng.random() < 0.55 + rating_diff*0.05:
+                    drive_score = 7
+                elif drive_score==0 and drive_yards >= 45 and self.rng.random() < 0.30 + rating_diff*0.04:
+                    drive_score = 3
+
                 if drive_score>0:
                     # assign to offense
                     if offense is home:
@@ -267,8 +676,8 @@ class GameSimulator:
                         away.season_stats["points_for"] += drive_score
                         home.season_stats["points_against"] += drive_score
                 else:
-                    # maybe settle for a FG with low chance but based on yards
-                    if drive_yards > 30 and self.rng.random() < 0.12:
+                    # maybe settle for a FG with reasonable chance but based on yards
+                    if drive_yards > 35 and self.rng.random() < 0.7:
                         fg = 3
                         if offense is home:
                             game_record["score"]["home"] += fg
@@ -417,21 +826,29 @@ def build_sample_team(team_name:str, city:str, seed_offset:int=0)->Team:
 def simulate_league(season_len:int=8):
     rng = seeded_rand(0)
     gs = GameSimulator(rng)
-    teamA = build_sample_team("Falcons", "Springfield", seed_offset=1)
-    teamB = build_sample_team("Sharks", "Rivertown", seed_offset=2)
-    teams = [teamA, teamB]
+    franchises = build_nfl_franchises()
+    teams = [build_sample_team(f.name, f.city, seed_offset=i+1) for i,f in enumerate(franchises)]
 
     all_game_events=[]
     games=[]
-    for gidx in range(season_len):
-        # alternate home/away
-        home = teams[gidx % 2]
-        away = teams[(gidx+1) % 2]
-        gr = gs.simulate_game(home, away)
-        games.append(gr)
-        all_game_events.extend(gs.log.dump())
-        # clear log between games to avoid duplication in this simple demo
-        gs.log = EventLog()
+    # divisions of 4 teams each
+    divisions = [teams[i:i+4] for i in range(0, len(teams), 4)]
+    week = 1
+    for div in divisions:
+        idxs = list(range(len(div)))
+        for h in idxs:
+            for a in idxs:
+                if h == a:
+                    continue
+                home = div[h]
+                away = div[a]
+                gr = gs.simulate_game(home, away)
+                gr["week"] = week
+                gr["division_game"] = True
+                games.append(gr)
+                all_game_events.extend(gs.log.dump())
+                gs.log = EventLog()
+                week += 1
 
     # aggregate stats
     aggregator = StatAggregator(all_game_events)
@@ -444,29 +861,243 @@ def simulate_league(season_len:int=8):
 
     # print summary
     print("=== Season Summary ===")
-    for t in teams:
-        print(f"{t.city} {t.name} - W:{t.season_stats['wins']} L:{t.season_stats['losses']} PF:{t.season_stats['points_for']} PA:{t.season_stats['points_against']} Coach:{t.coach_quality:.2f}")
+    for div_idx, div in enumerate(divisions):
+        print(f"Division {div_idx+1}:")
+        for t in div:
+            print(f"  {t.city} {t.name} - W:{t.season_stats['wins']} L:{t.season_stats['losses']} PF:{t.season_stats['points_for']} PA:{t.season_stats['points_against']} Coach:{t.coach_quality:.2f}")
 
     print("\nTop Candidates (MVP):")
     for m in mvps:
         print(f"{m['player_name']} - Score: {m['score']} Impact:{m['impact']} Justification: {m['justification']}")
-    print("\nSample raw events count:", len(all_game_events))
-    # dump small provenance sample
-    sample_ev = all_game_events[:6]
-    print("\nSample raw event (first 3):")
-    print(json.dumps(sample_ev[:3], indent=2))
+    print("\nTotal plays logged:", len(all_game_events))
     return {"teams":teams, "games":games, "events":all_game_events, "agg":agg, "mvps":mvps}
+
+def run_career_demo()->CareerState:
+    """
+    Quick HS -> College -> NFL path to show the CareerEngine loop.
+    """
+    rng = seeded_rand(101)
+    eng = CareerEngine(rng)
+    state = eng.create_prospect("Alex", "Game", pos="QB", stars=2)
+    for y in range(4):
+        eng.simulate_high_school_year(state, year=y+1)
+    eng.generate_college_offers(state)
+    if state.college_offers:
+        # pick the best prestige offer to mimic blue-blood pull
+        top = max(state.college_offers, key=lambda o: o["prestige"])
+        eng.commit_to_college(state, top["id"])
+    for y in range(4):
+        eng.simulate_college_year(state, year=y+1)
+        if state.stage == "NFL":
+            break
+    if state.stage != "NFL":
+        eng.promote_to_nfl(state)
+    # simulate some NFL seasons for the career summary
+    state.nfl_stats = eng.simulate_nfl_seasons(state, seasons=20)
+
+    print("\n=== Career Demo ===")
+    print(f"{state.player.name} ({state.player.position}) final stars: {state.star_rating:.2f}")
+    print(f"College: {state.college_team.name if state.college_team else 'None'} · Draft: {state.draft_projection} -> {state.nfl_team}")
+    if state.retired:
+        print(f"Retired after NFL year {state.retired_year}.")
+    print("Career beats:")
+    for h in state.history:
+        print(" -", h)
+    # quick totals summary
+    total_hs_yds = sum(s.get("production_yards",0) for s in state.hs_stats)
+    total_cfb_yds = sum(s.get("production_yards",0) for s in state.college_stats)
+    total_nfl_pass = sum(s.get("pass_yards",0) for s in getattr(state, "nfl_stats", []))
+    print(f"Career totals: HS {total_hs_yds} yds · College {total_cfb_yds} yds · NFL {total_nfl_pass} pass yds · Awards {len(state.awards)}")
+    return state
+
+def simulate_nfl_season_with_playoffs(num_weeks:int=17):
+    """
+    Build all NFL teams, simulate a 17-week season (random pairings each week),
+    compute standings, then run a simple 8-team playoff bracket to a Super Bowl champion.
+    """
+    rng = seeded_rand(202)
+    gs = GameSimulator(rng)
+    franchises = build_nfl_franchises()
+    teams = [build_sample_team(fr.name, fr.city, seed_offset=300+idx) for idx,fr in enumerate(franchises)]
+    games=[]
+    all_events=[]
+
+    # Regular season schedule: weekly shuffle/pair
+    for week in range(1, num_weeks+1):
+        rng.shuffle(teams)
+        for i in range(0, len(teams), 2):
+            if i+1 >= len(teams):
+                continue
+            home = teams[i]
+            away = teams[i+1]
+            gr = gs.simulate_game(home, away)
+            gr["week"] = week
+            games.append(gr)
+        all_events.extend(gs.log.dump())
+        gs.log = EventLog()
+
+    # standings already in season_stats
+    standings = sorted(teams, key=lambda t: (t.season_stats["wins"], t.season_stats["points_for"]-t.season_stats["points_against"]), reverse=True)
+
+    # Playoffs: top 8 overall seeds single-elimination
+    seeds = standings[:8]
+    bracket = []
+    current_round = seeds
+    round_num = 1
+    while len(current_round) > 1:
+        next_round = []
+        for i in range(0, len(current_round), 2):
+            if i+1 >= len(current_round):
+                continue
+            home = current_round[i]
+            away = current_round[i+1]
+            gr = gs.simulate_game(home, away)
+            gr["round"] = round_num
+            bracket.append({
+                "round": round_num,
+                "home": home.name,
+                "away": away.name,
+                "score": gr["score"],
+                "winner": home.name if gr["score"]["home"] >= gr["score"]["away"] else away.name
+            })
+            winner = home if gr["score"]["home"] >= gr["score"]["away"] else away
+            next_round.append(winner)
+            all_events.extend(gs.log.dump())
+            gs.log = EventLog()
+        current_round = next_round
+        round_num += 1
+    champion = current_round[0].name if current_round else None
+
+    # Aggregate stats and league MVP (regular season events)
+    aggregator = StatAggregator(all_events)
+    agg = aggregator.aggregate()
+    plook = {p.id:p for t in teams for p in t.roster}
+    award = AwardEngine(plook, agg)
+    mvps = award.compute_mvp(top_n=3)
+
+    print(f"\nNFL season simulated: {len(games)} games, champion: {champion}")
+    return {
+        "teams": teams,
+        "games": games,
+        "standings": standings,
+        "playoffs": bracket,
+        "champion": champion,
+        "mvps": mvps,
+        "events": all_events
+    }
 
 # ---------------------------
 # Run when executed
 # ---------------------------
 if __name__ == "__main__":
-    out = simulate_league(season_len=16)
+    out = simulate_league(season_len=17)
+    career_state = run_career_demo()
+    nfl_full = simulate_nfl_season_with_playoffs(num_weeks=17)
+    # print NFL season summary
+    print("\n=== NFL Season (Full) ===")
+    print(f"Champion: {nfl_full['champion']}")
+    print("Top 5 Standings:")
+    for t in nfl_full["standings"][:5]:
+        print(f" - {t.city} {t.name}: {t.season_stats['wins']}-{t.season_stats['losses']} PF:{t.season_stats['points_for']} PA:{t.season_stats['points_against']}")
+    print("Playoffs (round by round):")
+    for game in nfl_full["playoffs"]:
+        print(f"  Round {game['round']}: {game['home']} {game['score']['home']} vs {game['away']} {game['score']['away']} -> {game['winner']}")
+    print("Regular-season MVPs:")
+    for m in nfl_full["mvps"]:
+        print(f" - {m['player_name']} Score:{m['score']} Impact:{m['impact']} Justification:{m['justification']}")
+    # career totals summary
+    total_hs_yds = sum(s.get("production_yards",0) for s in career_state.hs_stats)
+    total_hs_tds = sum(s.get("tds",0) for s in career_state.hs_stats)
+    total_cfb_yds = sum(s.get("production_yards",0) for s in career_state.college_stats)
+    total_cfb_tds = sum(s.get("tds",0) for s in career_state.college_stats)
+    total_nfl_pass = sum(s.get("pass_yards",0) for s in getattr(career_state, "nfl_stats", []))
+    total_nfl_tds = sum(s.get("pass_tds",0) for s in getattr(career_state, "nfl_stats", []))
+    total_nfl_ints = sum(s.get("ints",0) for s in getattr(career_state, "nfl_stats", []))
+    awards_count = len(career_state.awards)
+    awards_by_level = {"HS": [], "College": [], "NFL": []}
+    awards_breakdown = {
+        "super_bowl": 0,
+        "mvp": 0,
+        "pro_bowl": 0,
+        "all_pro": 0,
+        "heisman": 0,
+        "all_american": 0,
+        "maxwell": 0
+    }
+    for a in career_state.awards:
+        lvl = a.get("level","").title()
+        if lvl.upper() == "HS":
+            awards_by_level["HS"].append(a)
+        elif lvl.upper() == "COLLEGE":
+            awards_by_level["College"].append(a)
+        else:
+            awards_by_level["NFL"].append(a)
+        name = a.get("name","").lower()
+        if "super bowl" in name:
+            awards_breakdown["super_bowl"] += 1
+        if "mvp" in name:
+            awards_breakdown["mvp"] += 1
+        if "pro bowl" in name:
+            awards_breakdown["pro_bowl"] += 1
+        if "all-pro" in name or "all pro" in name:
+            awards_breakdown["all_pro"] += 1
+        if "heisman" in name:
+            awards_breakdown["heisman"] += 1
+        if "all-american" in name:
+            awards_breakdown["all_american"] += 1
+        if "maxwell" in name:
+            awards_breakdown["maxwell"] += 1
+    # append breakdown to history for visibility and print
+    breakdown_line = (
+        f"Awards summary — SB:{awards_breakdown['super_bowl']} MVP:{awards_breakdown['mvp']} "
+        f"ProBowls:{awards_breakdown['pro_bowl']} All-Pro:{awards_breakdown['all_pro']} "
+        f"Heisman:{awards_breakdown['heisman']} All-American:{awards_breakdown['all_american']} Maxwell:{awards_breakdown['maxwell']}"
+    )
+    career_state.history.append(breakdown_line)
+    print(" - " + breakdown_line)
+
     # optionally save outputs for further inspection
     with open("sim_output.json","w") as f:
         json.dump({
             "mvps": out["mvps"],
             "teams": [{ "id":t.id, "name":t.name, "city":t.city, "season_stats": t.season_stats} for t in out["teams"]],
-            "event_count": len(out["events"])
+            "event_count": len(out["events"]),
+            "career_summary": {
+                "player": career_state.player.name,
+                "position": career_state.player.position,
+                "stars": career_state.star_rating,
+                "college": career_state.college_team.name if career_state.college_team else None,
+                "draft_projection": career_state.draft_projection,
+                "nfl_team": career_state.nfl_team,
+                "hs_stats": career_state.hs_stats,
+                "college_stats": getattr(career_state, "college_stats", []),
+                "offers": career_state.college_offers,
+                "nfl_stats": getattr(career_state, "nfl_stats", []),
+                "awards": awards_by_level,
+                "retired": career_state.retired,
+                "retired_year": career_state.retired_year,
+                "totals": {
+                    "hs_yards": total_hs_yds,
+                    "hs_tds": total_hs_tds,
+                    "college_yards": total_cfb_yds,
+                    "college_tds": total_cfb_tds,
+                    "nfl_pass_yards": total_nfl_pass,
+                    "nfl_pass_tds": total_nfl_tds,
+                    "nfl_ints": total_nfl_ints,
+                    "awards_count": awards_count,
+                    "awards_breakdown": awards_breakdown
+                },
+                "history": career_state.history
+            },
+            "nfl_season": {
+                "champion": nfl_full["champion"],
+                "mvps": nfl_full["mvps"],
+                "playoffs": nfl_full["playoffs"],
+                "standings": [
+                    {"team": t.name, "city": t.city, "wins": t.season_stats["wins"], "losses": t.season_stats["losses"], "pf": t.season_stats["points_for"], "pa": t.season_stats["points_against"]}
+                    for t in nfl_full["standings"]
+                ],
+                "games": [{"week": g.get("week","?"), "home": g["home_name"], "away": g["away_name"], "score": g["score"]} for g in nfl_full["games"]]
+            }
         }, f, indent=2)
     print("\nSim output written to sim_output.json")

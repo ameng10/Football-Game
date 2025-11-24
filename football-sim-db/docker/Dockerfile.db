@@ -1,0 +1,14 @@
+# Use the official PostgreSQL image as the base
+FROM postgres:15
+
+# Set environment variables for the default database and user
+ENV POSTGRES_DB=football_sim
+ENV POSTGRES_USER=football_user
+ENV POSTGRES_PASSWORD=football_pass
+
+# Copy initialization scripts (if any) into the Docker image
+# Uncomment the next line if you have SQL scripts in the initdb directory
+# COPY initdb/ /docker-entrypoint-initdb.d/
+
+# Expose the default PostgreSQL port
+EXPOSE 5432

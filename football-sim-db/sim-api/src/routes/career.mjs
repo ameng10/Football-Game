@@ -65,4 +65,29 @@ export default function careerRoutes(app, q) {
       `SELECT delta, reason, created_at FROM sim.career_social_feed WHERE save_id=$1::uuid ORDER BY created_at DESC LIMIT 20`, [saveId]);
     res.json({ ok:true, followers: rows[0]?.followers ?? 0, feed });
   });
+
+  // Get Instagram feed for the career player
+  app.get("/api/career/:saveId/instagram", async (req, res) => {
+    const { saveId } = req.params;
+    try {
+      // Get the player_profile_id for this save
+      const { rows:profileRows } = await q(
+        `SELECT player_profile_id FROM sim.career_player WHERE save_id = $1::uuid`, [saveId]);
+      if (!profileRows.length) return res.status(404).json({ ok: false, error: "Career not found" });
+
+      // Get the player_id from player_profile (assuming player_profile.id = players.id)
+      const playerProfileId = profileRows[0].player_profile_id;
+
+      // Query the instagram_feed table for this player
+      const { rows:posts } = await q(
+        `SELECT post_url, caption, posted_at, likes, comments
+         FROM instagram_feed
+         WHERE player_id = $1
+         ORDER BY posted_at DESC
+         LIMIT 10`, [playerProfileId]);
+      res.json({ ok: true, posts });
+    } catch (e) {
+      res.status(500).json({ ok: false, error: e.message });
+    }
+  });
 }
